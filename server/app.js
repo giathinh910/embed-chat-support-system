@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 var io = require('socket.io')();
+require('./db/connection');
+var userAgentModel = require('./model/user-agent');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
