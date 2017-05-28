@@ -1,0 +1,7 @@
+<% if(typeof messages !== 'undefined') {
+messages.forEach(function(message){ %>
+<div class="alert alert-<%= message.type %>">
+    <%= message.content %>
+</div>
+<% });
+} %>

@@ -1,0 +1,32 @@
+<% include ../partials/head.ejs %>
+
+<div class="container mt-5">
+    <div class="row justify-content-md-center">
+        <div class="col-12 col-md-6">
+
+            <% include ../global-components/alert.ejs %>
+
+            <div class="card">
+                <form class="card-block" action="" method="post">
+                    <h4 class="card-title">Sign In</h4>
+                    <hr>
+
+                    <div class="form-group">
+                        <label for="emailInput">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="emailInput" placeholder="Example john.doe@example.com" name="email" value="agent1@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="passwordInput" placeholder="Password must be at least 6 character" name="password" value="121212">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Sign In</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<% include ../partials/foot.ejs %>

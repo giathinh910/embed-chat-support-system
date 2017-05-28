@@ -14,38 +14,62 @@ var userAgentSchema = new Schema({
 
 var UserAgent = mongoose.model('UserAgent', userAgentSchema);
 
-var defaultUserAgent = {
-    email: 'agent1@email.com',
-    password: '121212',
-    display_name: 'Agent 1',
-    level: 1
-};
-
-async.waterfall([
-    function (callback) {
-        UserAgent
-            .findOne({email: defaultUserAgent.email})
-            .exec(function (err, userAgent) {
-                callback(err, userAgent);
-            });
-    },
-    function (userAgent, callback) {
-        if (!userAgent) {
-            bcrypt.hash(defaultUserAgent.password, bcryptConfig.saltRounds, function (err, hash) {
-                defaultUserAgent.password = hash;
-                callback(err, defaultUserAgent);
+UserAgent.authenticate = function (inputUser, callback) {
+    async.waterfall([
+        function (callback) {
+            UserAgent
+                .findOne({email: inputUser.email})
+                .exec(function (err, userAgent) {
+                    if (err)
+                        console.log(err);
+                    if (userAgent)
+                        callback(null, userAgent);
+                    else
+                        return callback(null, false);
+                });
+        },
+        function (userAgent, callback) {
+            bcrypt.compare(inputUser.password, userAgent.password, function (err, result) {
+                if (err)
+                    console.log(err);
+                callback(null, userAgent);
             });
         }
-    },
-    function (hashedPasswordUserAgent) {
-        UserAgent.create(hashedPasswordUserAgent, function (err, r) {
-            if (err)
-                console.log(err);
-            console.log('created default agent user', r);
-        });
-    }
-], function (err, result) {
-    console.log(result);
-});
+    ], function (err, result) {
+        if (callback)
+            callback(err, result);
+    });
+};
+
+UserAgent.createNewUser = function (inputUser, callback) {
+    async.waterfall([
+        function (callback) {
+            UserAgent
+                .findOne({email: inputUser.email})
+                .exec(function (err, userAgent) {
+                    callback(err, userAgent);
+                });
+        },
+        function (userAgent, callback) {
+            if (!userAgent)
+                bcrypt.hash(inputUser.password, bcryptConfig.saltRounds, function (err, hash) {
+                    inputUser.password = hash;
+                    callback(err, inputUser);
+                });
+            else
+                return callback('agent user existed', null);
+        },
+        function (hashedPasswordUserAgent, callback) {
+            UserAgent.create(hashedPasswordUserAgent, function (err, r) {
+                if (err)
+                    console.log(err);
+                callback(null, r);
+            });
+        }
+    ], function (err, result) {
+        if (callback)
+            callback(err, result);
+    });
+};
 
 module.exports = UserAgent;

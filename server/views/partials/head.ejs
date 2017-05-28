@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title><%= pageTitle %> | <%= siteTitle %></title>
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<h1 class="sr-only">Chat Embed</h1>
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand mb-0" href="#"><img src="/images/chat.svg" width="30" height="30" alt="Embed Chat Logo"></a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link <%= pageId === 'home' ? 'active' : '' %>" href="/">Home</a>
+                </li>
+                <% if (typeof user === 'undefined') { %>
+                <li class="nav-item">
+                    <a class="nav-link <%= pageId === 'register' ? 'active' : '' %>" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= pageId === 'login' ? 'active' : '' %>" href="/login">Login</a>
+                </li>
+                <% } else { %>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
