@@ -2,8 +2,14 @@
 	"version": 3,
 	"file": "style.css",
 	"sources": [
-		"style.scss"
+		"../../scss/style.scss",
+		"../../scss/bootstrap/bootstrap.scss",
+		"../../scss/bootstrap/_variables.scss",
+		"../../scss/bootstrap/_custom.scss",
+		"../../scss/variables.scss",
+		"../../scss/mixins.scss",
+		"../../scss/bs-extend.scss"
 	],
-	"mappings": "AAAA,AACE,EADA,AAAA,aAAa,CACb,CAAC,CAAC;EACA,eAAe,EAAE,IAAK,GACvB",
+	"mappings": "AAKA,AACE,EADA,AAAA,aAAa,CACb,CAAC,AAAC,CACA,eAAe,CAAE,IAAK,CACvB,AAMH,AAAA,WAAW,AAAC,CACV,SAAS,CAAE,MAAO,CACnB,AAED,AACE,cADY,CACZ,eAAe,AAAC,CACd,UAAU,CAAE,OAAQ,CACpB,MAAM,CAAE,KAAM,CACd,aAAa,CAAE,IAAK,CACpB,aAAa,CEySQ,MAAM,CFxS5B",
 	"names": []
 }

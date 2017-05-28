@@ -10,8 +10,8 @@ var session = require('express-session');
 require('./db/connection');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var auth = require('./routes/auth');
+var chat = require('./routes/chat');
 
 var app = express();
 
@@ -36,16 +36,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(sassMiddleware({
-    src: path.join(__dirname, 'public'),
-    dest: path.join(__dirname, 'public'),
+    src: path.join(__dirname, 'scss'),
+    dest: path.join(__dirname, 'public/stylesheets'),
+    outputStyle: 'compressed',
     indentedSyntax: false, // true = .sass and false = .scss
-    sourceMap: true
+    sourceMap: true,
+    prefix: '/stylesheets'
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/', auth);
-app.use('/users', users);
+app.use('/chat', chat);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

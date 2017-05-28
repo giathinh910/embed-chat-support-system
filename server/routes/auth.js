@@ -89,7 +89,7 @@ router
         UserAgentModel.authenticate(req.body, function (err, userAgent) {
             if (userAgent) {
                 req.session.userAgent = userAgent;
-                res.redirect('/');
+                res.redirect('/chat');
             } else {
                 loginPageParams.messages = [{
                     type: 'danger',
@@ -98,6 +98,10 @@ router
                 res.render('auth/login', loginPageParams);
             }
         });
+    })
+    .get('/logout', function (req, res, next) {
+        req.session.destroy();
+        res.redirect('/');
     });
 
 module.exports = router;
