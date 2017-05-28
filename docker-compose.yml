@@ -22,7 +22,7 @@ services:
     depends_on:
       - "mongo"
     environment:
-      - DEBUG=myapp:*
+      - DEBUG=server:*
     networks:
       - isolated-network
   client:
