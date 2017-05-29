@@ -8,11 +8,11 @@ var pageData = {
 };
 
 /* GET home page. */
-router.get('/', middleware.checkUserAgentLoggedIn, function (req, res, next) {
+router.get('/', middleware.checkUserLoggedIn, function (req, res, next) {
     var data = {
         pageTitle: pageData.pageTitle,
         pageId: pageData.pageId,
-        user: req.session.userAgent
+        user: req.session.user
     };
     res.render('chat/chat', data);
 });

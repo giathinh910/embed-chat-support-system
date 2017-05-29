@@ -1,7 +1,7 @@
 module.exports = {
-    checkUserAgentLoggedIn: function (req, res, next) {
-        if (req.session.userAgent) {
-            res.locals.userAgent = req.session.userAgent;
+    checkUserLoggedIn: function (req, res, next) {
+        if (req.session.user) {
+            res.locals.user = req.session.user;
             next();
         } else {
             res.redirect('/login');

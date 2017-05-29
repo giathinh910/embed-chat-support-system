@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var UserAgentModel = require('../model/user-agent');
+var UserModel = require('../model/user');
 
 // just create a default account
-UserAgentModel.createNewUser({
+UserModel.createNewUser({
     email: 'agent1@email.com',
     password: '121212',
     display_name: 'Agent 1',
@@ -42,10 +42,10 @@ router
             return;
         }
 
-        var newUserAgent = req.body;
-        newUserAgent.level = 4;
+        var newUser = req.body;
+        newUser.level = 4;
 
-        UserAgentModel.createNewUser(newUserAgent, function (err, result) {
+        UserModel.createNewUser(newUser, function (err, result) {
             if (err) {
                 registerPageParams.messages = [{
                     type: 'info',
@@ -86,9 +86,9 @@ router
             return;
         }
 
-        UserAgentModel.authenticate(req.body, function (err, userAgent) {
-            if (userAgent) {
-                req.session.userAgent = userAgent;
+        UserModel.authenticate(req.body, function (err, user) {
+            if (user) {
+                req.session.user = user;
                 res.redirect('/chat');
             } else {
                 loginPageParams.messages = [{

@@ -5,34 +5,34 @@ var bcrypt = require('bcrypt');
 
 var Schema = mongoose.Schema;
 
-var userAgentSchema = new Schema({
+var userSchema = new Schema({
     email: String,
     password: String,
     display_name: String,
     level: Number
 });
 
-var UserAgent = mongoose.model('UserAgent', userAgentSchema);
+var User = mongoose.model('User', userSchema);
 
-UserAgent.authenticate = function (inputUser, callback) {
+User.authenticate = function (inputUser, callback) {
     async.waterfall([
         function (callback) {
-            UserAgent
+            User
                 .findOne({email: inputUser.email})
-                .exec(function (err, userAgent) {
+                .exec(function (err, user) {
                     if (err)
                         console.log(err);
-                    if (userAgent)
-                        callback(null, userAgent);
+                    if (user)
+                        callback(null, user);
                     else
                         return callback(null, false);
                 });
         },
-        function (userAgent, callback) {
-            bcrypt.compare(inputUser.password, userAgent.password, function (err, result) {
+        function (user, callback) {
+            bcrypt.compare(inputUser.password, user.password, function (err, result) {
                 if (err)
                     console.log(err);
-                callback(null, userAgent);
+                callback(null, user);
             });
         }
     ], function (err, result) {
@@ -41,26 +41,26 @@ UserAgent.authenticate = function (inputUser, callback) {
     });
 };
 
-UserAgent.createNewUser = function (inputUser, callback) {
+User.createNewUser = function (inputUser, callback) {
     async.waterfall([
         function (callback) {
-            UserAgent
+            User
                 .findOne({email: inputUser.email})
-                .exec(function (err, userAgent) {
-                    callback(err, userAgent);
+                .exec(function (err, user) {
+                    callback(err, user);
                 });
         },
-        function (userAgent, callback) {
-            if (!userAgent)
+        function (user, callback) {
+            if (!user)
                 bcrypt.hash(inputUser.password, bcryptConfig.saltRounds, function (err, hash) {
                     inputUser.password = hash;
                     callback(err, inputUser);
                 });
             else
-                return callback('agent user existed', null);
+                return callback('user existed', null);
         },
-        function (hashedPasswordUserAgent, callback) {
-            UserAgent.create(hashedPasswordUserAgent, function (err, r) {
+        function (hashedPasswordUser, callback) {
+            User.create(hashedPasswordUser, function (err, r) {
                 if (err)
                     console.log(err);
                 callback(null, r);
@@ -72,4 +72,4 @@ UserAgent.createNewUser = function (inputUser, callback) {
     });
 };
 
-module.exports = UserAgent;
+module.exports = User;
