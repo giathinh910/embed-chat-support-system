@@ -72,4 +72,12 @@ User.createNewUser = function (inputUser, callback) {
     });
 };
 
+User.getUserById = function (id, callback) {
+    User
+        .findOne({_id: id})
+        .exec(function (err, user) {
+            callback(err, user);
+        });
+};
+
 module.exports = User;

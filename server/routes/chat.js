@@ -9,6 +9,7 @@ var pageData = {
 
 /* GET home page. */
 router.get('/', middleware.checkUserLoggedIn, function (req, res, next) {
+    console.log(req.cookies.testName);
     var data = {
         pageTitle: pageData.pageTitle,
         pageId: pageData.pageId,

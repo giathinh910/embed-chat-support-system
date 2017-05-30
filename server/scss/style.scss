@@ -3,6 +3,11 @@
 @import "mixins";
 @import "bs-extend";
 
+body {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+}
+
 h1.navbar-brand {
   a {
     text-decoration: none;
@@ -22,5 +27,33 @@ h1.navbar-brand {
     height: 500px;
     margin-bottom: 15px;
     border-radius: $border-radius;
+    padding: 1rem;
+    overflow-y: scroll;
+    .entry-message {
+      .entry-content {
+        display: block;
+        width: auto;
+        max-width: 70%;
+        background: #fff;
+        margin-bottom: 1rem;
+        padding: .5rem 1rem;
+        border-radius: $border-radius-lg;
+      }
+      .entry-author {
+        font-weight: 600;
+        display: block;
+        margin-bottom: .5rem;
+      }
+      &.is-me {
+        .entry-author {
+          text-align: right;
+        }
+        .entry-content {
+          float: right;
+          background: $blue;
+          color: #fff;
+        }
+      }
+    }
   }
 }
