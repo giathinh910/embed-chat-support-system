@@ -7,9 +7,8 @@ var pageData = {
     pageId: 'chat'
 };
 
-/* GET home page. */
 router.get('/', middleware.checkUserLoggedIn, function (req, res, next) {
-    console.log(req.cookies.testName);
+    console.log(req.session.user);
     var data = {
         pageTitle: pageData.pageTitle,
         pageId: pageData.pageId,

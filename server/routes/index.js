@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var middleware = require('../routes/middleware');
 
 var pageParams = {
     pageTitle: 'Home',
@@ -7,7 +8,7 @@ var pageParams = {
 };
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', middleware.checkUserNotLoggedIn, function (req, res, next) {
     res.render('index', pageParams);
 });
 

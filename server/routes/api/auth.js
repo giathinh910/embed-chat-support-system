@@ -7,8 +7,11 @@ var UserModel = require('../../model/user');
 
 router
     .get('/me', function (req, res, next) {
-        var decoded = jwt.decode(req.cookies.token);
-        res.send(decoded);
+        if (req.cookies.token) {
+            var decoded = jwt.decode(req.cookies.token);
+            res.send(decoded);
+        } else
+            res.sendStatus(401);
     });
 
 module.exports = router;

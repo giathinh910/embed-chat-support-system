@@ -9,7 +9,7 @@ var UserModel = require('../model/user');
 UserModel.createNewUser({
     email: 'agent1@email.com',
     password: '121212',
-    display_name: 'Agent 1',
+    displayName: 'Agent 1',
     level: 1
 });
 
@@ -34,29 +34,28 @@ router
             pageId: pageData.register.pageId
         };
 
-        // validate
-        if (!req.body.email || !req.body.password || !req.body.display_name) {
-            registerPageData.alerts = [{
-                type: 'warning',
-                content: 'Please fill all required fields'
-            }];
-            res.render('auth/register', registerPageData);
-            return;
-        }
-
         var newUser = req.body;
-        newUser.level = 4;
+        newUser.level = 11;
 
         UserModel.createNewUser(newUser, function (err, result) {
             if (err) {
-                registerPageData.alerts = [{
-                    type: 'info',
-                    content: 'User with this email already existed'
-                }];
+                switch (err) {
+                    case 'ValidationError':
+                        registerPageData.alerts = [{
+                            type: 'warning',
+                            content: 'Please fill up all required information and make sure they are valid'
+                        }];
+                        break;
+                    case 'user-existed':
+                        registerPageData.alerts = [{
+                            type: 'info',
+                            content: 'User with this email already existed'
+                        }];
+                        break;
+                }
                 res.render('auth/register', registerPageData);
-            } else {
+            } else
                 res.redirect('/login?register=success');
-            }
         });
     })
     .get('/login', function (req, res, next) {
@@ -94,7 +93,7 @@ router
                 var token = jwt.sign({
                     _id: user._id,
                     email: user.email,
-                    display_name: user.display_name
+                    displayName: user.displayName
                 }, jwtConfig.secret);
                 res.cookie('token', token).redirect('/chat');
             } else {

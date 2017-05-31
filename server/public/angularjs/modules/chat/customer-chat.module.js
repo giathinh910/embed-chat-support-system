@@ -1,6 +1,7 @@
 angular
     .module('customerChatModule', [
-        'ui.router'
+        'ui.router',
+        'ngCookies'
     ])
     .config(function ($stateProvider) {
         $stateProvider
@@ -10,13 +11,18 @@ angular
                 templateUrl: './angularjs/modules/chat/customer-chat.html'
             })
     })
-    .controller('customerChatController', function ($scope, $http) {
+    .controller('customerChatController', function ($scope, $cookies, $http) {
+        var socket = io('http://localhost:3001/ws/chat', {
+            query: {
+                token: $cookies.get('token')
+            }
+        });
         $scope.activeMessages = [
             {
                 content: 'Hello, I\'m agent 1. How can I help you?',
                 room: {},
                 created_by: {
-                    display_name: 'Agent 1'
+                    displayName: 'Agent 1'
                 },
                 created_at: ''
             },
@@ -24,7 +30,7 @@ angular
                 content: 'I wanna ask ... uhm',
                 room: {},
                 created_by: {
-                    display_name: 'Customer 1'
+                    displayName: 'Customer 1'
                 },
                 created_at: ''
             }

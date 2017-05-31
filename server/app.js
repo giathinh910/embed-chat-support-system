@@ -8,12 +8,14 @@ var sassMiddleware = require('node-sass-middleware');
 var io = require('socket.io');
 var session = require('express-session');
 var config = require('./config');
+var ioChat = require('./routes/socket/chat');
 require('./db/connection');
 
 var index = require('./routes/index');
 var auth = require('./routes/auth');
 var chat = require('./routes/chat');
 var apiAuth = require('./routes/api/auth');
+var apiChat = require('./routes/api/chat');
 
 var app = express();
 
@@ -22,6 +24,9 @@ app.locals.siteTitle = 'Embed Chat';
 
 // add io to app in order to use in www
 app.io = io();
+
+// init socket
+ioChat(app.io);
 
 app.use(session({
     secret: config.session.secret
@@ -50,6 +55,7 @@ app.use('/', index);
 app.use('/', auth);
 app.use('/chat', chat);
 app.use('/api/auth', apiAuth);
+app.use('/api/chat', apiChat);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

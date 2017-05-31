@@ -6,10 +6,32 @@ var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    email: String,
-    password: String,
-    display_name: String,
-    level: Number
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        validate: {
+            validator: function (v) {
+                return /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(v);
+            },
+            message: '{VALUE} is not a valid email address!'
+        }
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    displayName: {
+        type: String,
+        required: true
+
+    },
+    level: {
+        type: Number,
+        required: true,
+        min: 1,
+        default: 11
+    }
 });
 
 var User = mongoose.model('User', userSchema);
@@ -57,12 +79,12 @@ User.createNewUser = function (inputUser, callback) {
                     callback(err, inputUser);
                 });
             else
-                return callback('user existed', null);
+                return callback('user-existed', null);
         },
         function (hashedPasswordUser, callback) {
             User.create(hashedPasswordUser, function (err, r) {
                 if (err)
-                    console.log(err);
+                    return callback(err.name, err);
                 callback(null, r);
             });
         }
@@ -70,14 +92,6 @@ User.createNewUser = function (inputUser, callback) {
         if (callback)
             callback(err, result);
     });
-};
-
-User.getUserById = function (id, callback) {
-    User
-        .findOne({_id: id})
-        .exec(function (err, user) {
-            callback(err, user);
-        });
 };
 
 module.exports = User;
