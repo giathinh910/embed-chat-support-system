@@ -67,7 +67,7 @@ module.exports = function (io) {
 
                 // if sum of socket id of that user equals 0, then remove that user
                 if (onlineUsers[onlineUserIndex].sockets.length === 0) {
-                    socket.emit('an user comes offline', onlineUsers[onlineUserIndex].user);
+                    socket.broadcast.emit('an user comes offline', onlineUsers[onlineUserIndex].user);
                     onlineUsers.splice(onlineUserIndex, 1);
                 }
 
