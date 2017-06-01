@@ -18,7 +18,15 @@ export class AuthService {
     }
 
     login(credentials: any) {
-        const url = `${this.apiUrl}/login`;
+        const url = `${this.apiUrl}/auth/login`;
+        return this.http.post(url, JSON.stringify(credentials), {headers: this.headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    register(credentials: any) {
+        const url = `${this.apiUrl}/auth/register`;
         return this.http.post(url, JSON.stringify(credentials), {headers: this.headers})
             .toPromise()
             .then(response => response.json())

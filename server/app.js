@@ -5,11 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
+require('./db/connection');
 var io = require('socket.io');
 var session = require('express-session');
 var config = require('./config');
 var ioChat = require('./routes/socket/chat');
-require('./db/connection');
+var cors = require('./routes/api/cors');
 
 var index = require('./routes/index');
 var auth = require('./routes/auth');
@@ -54,6 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/', auth);
 app.use('/chat', chat);
+app.use('/api', cors);
 app.use('/api/auth', apiAuth);
 app.use('/api/chat', apiChat);
 

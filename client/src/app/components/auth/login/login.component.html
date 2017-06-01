@@ -1,3 +1,34 @@
-<p>
-  login works!
-</p>
+<form [formGroup]="loginForm" (submit)="onSubmit()">
+    <div *ngIf="loginFormErrors.invalid" class="validation-message">
+        <strong>{{ loginFormErrors.invalid }}</strong>
+    </div>
+    <div [ngClass]="{'has-danger': loginFormErrors.email}" class="form-group">
+        <!--<label class="col-form-label d-flex justify-content-between">-->
+            <!--Email-->
+            <!--<span *ngIf="loginFormErrors.email" class="form-control-feedback">-->
+                <!--{{ loginFormErrors.email }}-->
+            <!--</span>-->
+        <!--</label>-->
+
+        <input formControlName="email" type="text" class="form-control form-control"
+               placeholder="Nhập email">
+    </div>
+    <div [ngClass]="{'has-danger': loginFormErrors.password}" class="form-group">
+        <!--<label class="col-form-label">-->
+            <!--Mật khẩu-->
+            <!--<span *ngIf="loginFormErrors.password" class="form-control-feedback">-->
+                <!--{{ loginFormErrors.password }}-->
+            <!--</span>-->
+        <!--</label>-->
+        <input formControlName="password" type="password" class="form-control form-control"
+               placeholder="Nhập mật khẩu">
+    </div>
+    <div class="form-group">
+        <button [disabled]="!loginForm.valid || submitted" type="submit" class="btn btn-primary d-block text-center" style="width: 100%">
+            Đăng nhập
+        </button>
+    </div>
+    <div class="text-center mt-2">
+        <a routerLink="/register">... hoặc đăng kí nếu chưa có tài khoản</a>
+    </div>
+</form>

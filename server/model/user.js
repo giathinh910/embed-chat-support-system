@@ -79,7 +79,7 @@ User.createNewUser = function (inputUser, callback) {
                     callback(err, inputUser);
                 });
             else
-                return callback('user-existed', null);
+                return callback('EmailExisted', null);
         },
         function (hashedPasswordUser, callback) {
             User.create(hashedPasswordUser, function (err, r) {

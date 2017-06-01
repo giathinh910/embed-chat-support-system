@@ -46,7 +46,7 @@ router
                             content: 'Please fill up all required information and make sure they are valid'
                         }];
                         break;
-                    case 'user-existed':
+                    case 'EmailExisted':
                         registerPageData.alerts = [{
                             type: 'info',
                             content: 'User with this email already existed'
@@ -77,31 +77,32 @@ router
             pageId: pageData.login.pageId
         };
 
-        // validate
-        if (!req.body.email || !req.body.password) {
-            loginPageData.alerts = [{
-                type: 'warning',
-                content: 'Please fill all required fields'
-            }];
-            res.render('auth/login', loginPageData);
-            return;
-        }
-
         UserModel.authenticate(req.body, function (err, user) {
-            if (user) {
-                req.session.user = user;
-                var token = jwt.sign({
-                    _id: user._id,
-                    email: user.email,
-                    displayName: user.displayName
-                }, jwtConfig.secret);
-                res.cookie('token', token).redirect('/chat');
-            } else {
-                loginPageData.alerts = [{
-                    type: 'danger',
-                    content: 'Login failed'
-                }];
+            if (err) {
+                switch (err) {
+                    case 'ValidationError':
+                        loginPageData.alerts = [{
+                            type: 'warning',
+                            content: 'Please fill up all required information and make sure they are valid'
+                        }];
+                        break;
+                }
                 res.render('auth/login', loginPageData);
+            } else {
+                if (!user) {
+                    loginPageData.alerts = [{
+                        type: 'danger',
+                        content: 'Login failed'
+                    }];
+                } else {
+                    req.session.user = user;
+                    var token = jwt.sign({
+                        _id: user._id,
+                        email: user.email,
+                        displayName: user.displayName
+                    }, jwtConfig.secret);
+                    res.cookie('token', token).redirect('/chat');
+                }
             }
         });
     })
