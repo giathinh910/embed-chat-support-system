@@ -27,6 +27,7 @@ module.exports = function (io) {
         .on('connect', function (socket) {
             console.log('an user connected', socket.id);
 
+            /*=== HANDLE USER GOING ONLINE ======================================================*/
             // get user info from token
             var decoded = jwt.decode(socket.request._query['token'], {complete: true});
 
@@ -48,8 +49,15 @@ module.exports = function (io) {
             }
 
             console.log('onlineUsers', onlineUsers);
+            /*=====================================================================================*/
 
-            // handle an user disconnects
+
+            socket.on('user says', function(message) {
+                console.log('user says', message);
+            });
+
+
+            /*=== HANDLE USER GOING OFFLINE ======================================================*/
             socket.on('disconnect', function () {
                 console.log('an user disconnected', socket.id);
 
@@ -73,5 +81,6 @@ module.exports = function (io) {
 
                 console.log('onlineUsers', onlineUsers);
             });
+            /*=====================================================================================*/
         })
 };

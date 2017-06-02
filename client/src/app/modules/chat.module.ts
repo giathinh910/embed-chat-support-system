@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ChatComponent } from '../components/chat/chat.component';
 import { AuthGuardService } from '../services/auth-guard.service';
+import { ChatService } from "../services/chat.service";
 
 const routes: Routes = [
     {
@@ -25,7 +26,8 @@ const routes: Routes = [
         ChatComponent
     ],
     providers: [
-        AuthGuardService
+        AuthGuardService,
+        ChatService
     ]
 })
 export class ChatModule {

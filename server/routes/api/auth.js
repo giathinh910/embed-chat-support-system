@@ -37,10 +37,9 @@ router
                 }, jwtConfig.secret);
                 res.send({
                     'token': token,
-                    user: {
-                        email: user.email,
-                        displayName: user.displayName
-                    }
+                    id: user._id,
+                    email: user.email,
+                    displayName: user.displayName
                 });
             } else {
                 res.status(404).send({

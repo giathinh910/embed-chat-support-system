@@ -20,47 +20,38 @@ export class StorageService {
 
     // Token
     setToken(token) {
-        sessionStorage.setItem(this.storageKeys.token, token);
+        localStorage.setItem(this.storageKeys.token, token);
     }
 
     getToken() {
-        return sessionStorage.getItem(this.storageKeys.token);
+        return localStorage.getItem(this.storageKeys.token);
     }
 
     // User ID
     setUserId(id) {
-        sessionStorage.setItem(this.storageKeys.userId, id);
+        localStorage.setItem(this.storageKeys.userId, id);
     }
 
     getUserId() {
-        return sessionStorage.getItem(this.storageKeys.userId);
-    }
-
-    // Username
-    setUsername(username) {
-        sessionStorage.setItem(this.storageKeys.userUsername, username);
-    }
-
-    getUsername() {
-        return sessionStorage.getItem(this.storageKeys.userUsername);
+        return localStorage.getItem(this.storageKeys.userId);
     }
 
     // User Email
     setUserEmail(email) {
-        sessionStorage.setItem(this.storageKeys.userEmail, email);
+        localStorage.setItem(this.storageKeys.userEmail, email);
     }
 
     getUserEmail() {
-        return sessionStorage.getItem(this.storageKeys.userEmail);
+        return localStorage.getItem(this.storageKeys.userEmail);
     }
 
     // User Display Name
     setUserDisplayName(displayName) {
-        sessionStorage.setItem(this.storageKeys.userDisplayName, displayName);
+        localStorage.setItem(this.storageKeys.userDisplayName, displayName);
     }
 
     getUserDisplayName() {
-        return sessionStorage.getItem(this.storageKeys.userDisplayName);
+        return localStorage.getItem(this.storageKeys.userDisplayName);
     }
 
     // Mass update
@@ -69,14 +60,13 @@ export class StorageService {
             this.setToken(user.token);
         }
         this.setUserId(user.id);
-        this.setUsername(user.username);
         this.setUserEmail(user.email);
-        this.setUserDisplayName(user.display_name);
+        this.setUserDisplayName(user.displayName);
     }
 
     // Clear
     clear() {
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
 }

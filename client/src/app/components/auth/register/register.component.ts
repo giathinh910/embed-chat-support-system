@@ -86,7 +86,7 @@ export class RegisterComponent implements OnInit {
             this.submitted = false;
             if (!res.error) {
                 this.csService.setUser(res);
-                this.router.navigateByUrl('/');
+                this.router.navigateByUrl('/login');
             } else {
                 switch (res.error) {
                     case 'EmailExisted':

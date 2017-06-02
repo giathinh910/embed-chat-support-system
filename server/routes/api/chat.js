@@ -7,9 +7,8 @@ var RoomModel = require('../../model/room');
 var MessageModel = require('../../model/message');
 
 router
-    .get('/room', function (req, res, next) {
-        var decoded = jwt.decode(req.cookies.token);
-        res.send(decoded);
+    .post('/messages', function (req, res, next) {
+        //
     });
 
 module.exports = router;

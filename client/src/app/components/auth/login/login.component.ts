@@ -5,8 +5,6 @@ import { StorageService } from "../../../services/storage.service";
 import { Router } from "@angular/router";
 import { JwtHelper } from "angular2-jwt";
 
-declare let NProgress: any;
-
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -45,11 +43,11 @@ export class LoginComponent implements OnInit {
 
         // Build form
         this.loginForm = this.formBuilder.group({
-            email: ['', [
+            email: ['giathinh910@gmail.com', [
                 Validators.required,
                 Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
             ]],
-            password: ['', [Validators.required]]
+            password: ['121212', [Validators.required]]
         });
 
         this.loginForm.valueChanges.subscribe(data => this.onValueChanged(data));
@@ -80,10 +78,8 @@ export class LoginComponent implements OnInit {
             return;
         }
         this.submitted = true;
-        NProgress.start();
         this.authService.login(this.loginForm.value).then(res => {
             this.submitted = false;
-            NProgress.done();
             if (!res.error) {
                 this.csService.setUser(res);
                 this.router.navigateByUrl('/');

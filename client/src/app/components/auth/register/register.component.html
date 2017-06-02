@@ -1,5 +1,5 @@
 <form [formGroup]="registerForm" (submit)="onSubmit()">
-    <div *ngIf="registerFormErrors.invalid" class="mb-2">
+    <div *ngIf="registerFormErrors.invalid" class="mb-2 text-danger">
         <small>{{ registerFormErrors.invalid }}</small>
     </div>
     <div [ngClass]="{'has-danger': registerFormErrors.email}" class="form-group">
