@@ -1,0 +1,11 @@
+<% include partials/head.ejs %>
+
+<script src="/angularjs/modules/sites/sites-list.module.js"></script>
+<script src="/angularjs/modules/sites/sites-add.module.js"></script>
+<script src="/angularjs/sites.main.js"></script>
+
+<div ng-app="sitesMainModule" ng-controller="sitesMainController">
+    <div ui-view></div>
+</div>
+
+<% include partials/foot.ejs %>

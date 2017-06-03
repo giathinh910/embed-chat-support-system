@@ -3,8 +3,8 @@ var router = express.Router();
 var middleware = require('../routes/middleware');
 
 var pageData = {
-    pageTitle: 'Live Chat',
-    pageId: 'chat'
+    pageTitle: 'My Sites',
+    pageId: 'sites'
 };
 
 router.get('/', middleware.checkUserLoggedIn, function (req, res, next) {
@@ -13,7 +13,7 @@ router.get('/', middleware.checkUserLoggedIn, function (req, res, next) {
         pageId: pageData.pageId,
         user: req.session.user
     };
-    res.render('chat', data);
+    res.render('sites', data);
 });
 
 module.exports = router;

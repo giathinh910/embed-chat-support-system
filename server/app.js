@@ -10,13 +10,6 @@ var io = require('socket.io');
 var session = require('express-session');
 var config = require('./config');
 var ioChat = require('./routes/socket/chat');
-var cors = require('./routes/api/cors');
-
-var index = require('./routes/index');
-var auth = require('./routes/auth');
-var chat = require('./routes/chat');
-var apiAuth = require('./routes/api/auth');
-var apiChat = require('./routes/api/chat');
 
 var app = express();
 
@@ -52,12 +45,14 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/', auth);
-app.use('/chat', chat);
-app.use('/api', cors);
-app.use('/api/auth', apiAuth);
-app.use('/api/chat', apiChat);
+app.use('/', require('./routes/index'));
+app.use('/', require('./routes/auth'));
+app.use('/sites', require('./routes/site'));
+app.use('/chat', require('./routes/chat'));
+app.use('/api', require('./routes/api/cors'));
+app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/sites', require('./routes/api/sites'));
+app.use('/api/chat', require('./routes/api/chat'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -3,6 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var jwtConfig = require('../config').jwt;
 
+var middleware = require('./middleware');
 var UserModel = require('../model/user');
 
 // just create a default account
@@ -25,10 +26,10 @@ var pageData = {
 };
 
 router
-    .get('/register', function (req, res, next) {
+    .get('/register', middleware.checkUserNotLoggedIn, function (req, res, next) {
         res.render('auth/register', pageData.register);
     })
-    .post('/register', function (req, res, next) {
+    .post('/register', middleware.checkUserNotLoggedIn, function (req, res, next) {
         var registerPageData = {
             pageTitle: pageData.register.pageTitle,
             pageId: pageData.register.pageId
@@ -58,7 +59,7 @@ router
                 res.redirect('/login?register=success');
         });
     })
-    .get('/login', function (req, res, next) {
+    .get('/login', middleware.checkUserNotLoggedIn, function (req, res, next) {
         var loginPageData = {
             pageTitle: pageData.login.pageTitle,
             pageId: pageData.login.pageId
@@ -71,7 +72,7 @@ router
         }
         res.render('auth/login', loginPageData);
     })
-    .post('/login', function (req, res, next) {
+    .post('/login', middleware.checkUserNotLoggedIn, function (req, res, next) {
         var loginPageData = {
             pageTitle: pageData.login.pageTitle,
             pageId: pageData.login.pageId

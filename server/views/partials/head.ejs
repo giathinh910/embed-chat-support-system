@@ -24,43 +24,4 @@
 
 <h1 class="sr-only">Chat Embed</h1>
 
-<nav class="navbar fixed-top navbar-toggleable-sm navbar-light bg-faded">
-    <div class="container">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand mb-0" href="#"><img src="/images/chat.svg" width="30" height="30" alt="Embed Chat Logo"></a>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link <%= pageId === 'home' ? 'active' : '' %>" href="/">Home</a>
-                </li>
-                <% if (typeof user === 'undefined') { %>
-                <li class="nav-item">
-                    <a class="nav-link <%= pageId === 'register' ? 'active' : '' %>" href="/register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <%= pageId === 'login' ? 'active' : '' %>" href="/login">Login</a>
-                </li>
-                <% } %>
-            </ul>
-            <% if (typeof user !== 'undefined') { %>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="#current-user"
-                       id="dropdownMenuCurrentUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Hi, <%= user.displayName %>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuCurrentUser">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout"><i class="fa fa-sign-out"></i> Sign Out</a>
-                    </div>
-                </li>
-            </ul>
-            <% } %>
-        </div>
-    </div>
-</nav>
+<% include header.ejs %>
