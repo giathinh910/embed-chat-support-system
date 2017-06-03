@@ -38,6 +38,11 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+// init socket
+server.on('listening', function() {
+    require('../routes/socket/chat')(app.io);
+});
+
 /**
  * Normalize a port into a number, string, or false.
  */

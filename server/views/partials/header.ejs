@@ -26,16 +26,10 @@
                     </a>
                 </li>
                 <% } else { %>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle <%= pageId === 'sites' ? 'active' : '' %>"
-                       id="sitesDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                <li class="nav-item">
+                    <a class="nav-link <%= pageId === 'sites' ? 'active' : '' %>"
                        href="/sites"
                     ><i class="fa fa-globe"></i> My Sites</a>
-
-                    <div class="dropdown-menu" aria-labelledby="sitesDropdownMenu">
-                        <a class="dropdown-item" href="/sites"><i class="fa fa-list-alt"></i> My sites</a>
-                        <a class="dropdown-item" href="#!/add"><i class="fa fa-plus"></i> Add new</a>
-                    </div>
                 </li>
                 <% } %>
             </ul>

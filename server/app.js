@@ -8,8 +8,8 @@ var sassMiddleware = require('node-sass-middleware');
 require('./db/connection');
 var io = require('socket.io');
 var session = require('express-session');
+var mongoose = require('mongoose').Promise = global.Promise;
 var config = require('./config');
-var ioChat = require('./routes/socket/chat');
 
 var app = express();
 
@@ -19,11 +19,13 @@ app.locals.siteTitle = 'Embed Chat';
 // add io to app in order to use in www
 app.io = io();
 
-// init socket
-ioChat(app.io);
-
 app.use(session({
-    secret: config.session.secret
+    cookie: {
+        maxAge: 3600000
+    },
+    secret: config.session.secret,
+    resave: true,
+    saveUninitialized: false
 }));
 
 // view engine setup

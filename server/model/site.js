@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var async = require('async');
+var extend = require('extend');
 
 var Schema = mongoose.Schema;
 
@@ -27,13 +28,29 @@ var messageSchema = new Schema(
 var Site = mongoose.model('Site', messageSchema);
 
 Site.getList = function (params, callback) {
-    if (params)
-        Site.find({user: params.user}, function (err, docs) {
-            callback(err, docs);
+    var options = extend({
+        page: 1,
+        perPage: 10
+    }, params);
+
+    var skip = (options.page - 1) * options.perPage; // page 1 will have skip = 0
+
+    Site
+        .find({user: options.user})
+        .skip(skip)
+        .limit(options.perPage)
+        .sort({
+            _id: -1
         })
+        .exec(function (err, sites) {
+            if (err)
+                console.log(err);
+            else
+                callback(null, sites);
+        });
 };
 
-Site.addNewSite = function (data, callback) {
+Site.addOne = function (data, callback) {
     async.waterfall([
         function (callback) {
             Site

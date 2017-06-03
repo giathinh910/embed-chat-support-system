@@ -12,5 +12,16 @@ angular
             })
     })
     .controller('sitesListController', function ($scope, $cookies, $http) {
-        $scope.pageTitle = 'My Sites';
+        $scope.pageTitle = 'My Websites';
+
+        $scope.sites = [];
+
+        $http({
+            method: 'GET',
+            url: '//localhost:3001/api/sites?page=1'
+        }).then(function (res) {
+            $scope.sites = res.data;
+        }, function errorCallback(res) {
+            console.log(res.error);
+        });
     });

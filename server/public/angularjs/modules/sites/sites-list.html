@@ -1,3 +1,36 @@
-<div class="container mt-4">
+<div class="container mt-4 d-sm-flex justify-content-sm-between">
     <h2 class="page-title mb-4">{{pageTitle}}</h2>
+    <a href="#!/add"><i class="fa fa-plus"></i> Add New Site</a>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-block">
+            <table class="table">
+                <thead class="thead-default">
+                <tr>
+                    <th>#</th>
+                    <th>Domain</th>
+                    <th>Name</th>
+                    <th class="text-center">Online User</th>
+                    <th style="width: 100px;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="site in sites">
+                    <th scope="row">{{$index + 1}}</th>
+                    <td>{{site.domain}}</td>
+                    <td>{{site.displayName}}</td>
+                    <td class="text-center">n/a</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-info">Detail</button>
+                            <button type="button" class="btn btn-danger">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
