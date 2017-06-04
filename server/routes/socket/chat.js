@@ -2,8 +2,22 @@ var jwt = require('jsonwebtoken');
 var request = require('request');
 var config = require('../../config');
 var _ = require('lodash');
+var util = require('util');
 
-var onlineUsers = [];
+var sites = {
+    // 'domain-id': [
+    //     {
+    //         sockets: [],
+    //         user: {
+    //             _id: '',
+    //             email: '',
+    //             displayName: '',
+    //             level: '',
+    //             domain: ''
+    //         }
+    //     }
+    // ]
+};
 
 module.exports = function (io) {
     io.use(function (socket, next) {
@@ -29,26 +43,30 @@ module.exports = function (io) {
 
             /*=== HANDLE USER GOING ONLINE ======================================================*/
             // get user info from token
-            var decoded = jwt.decode(socket.request._query['token'], {complete: true});
+            var decoded = jwt.decode(socket.request._query['token'], {complete: true}),
+                decodedUser = decoded.payload;
 
-            var decodedUser = decoded.payload;
+            // init a domain container
+            if (!sites[decodedUser.site]) {
+                sites[decodedUser.site] = [];
+            }
 
-            var onlineUserIndex = _.findIndex(onlineUsers, function (onlineUser) {
+            var onlineUserIndex = _.findIndex(sites[decodedUser.site], function (onlineUser) {
                 return String(onlineUser.user._id) === decodedUser._id;
             });
 
             if (onlineUserIndex === -1) { // case user hasn't existed yet
-                onlineUsers.push({
+                sites[decodedUser.site].push({
                     sockets: [socket.id],
                     user: decodedUser
                 });
                 // broadcast user online
                 socket.broadcast.emit('an user comes online', decodedUser);
             } else { // case user has already online, just push socket id
-                onlineUsers[onlineUserIndex].sockets.push(socket.id);
+                sites[decodedUser.site][onlineUserIndex].sockets.push(socket.id);
             }
 
-            console.log('onlineUsers', onlineUsers);
+            console.log('sites', util.inspect(sites, {showHidden: false, depth: null}));
             /*=====================================================================================*/
 
 
@@ -56,30 +74,29 @@ module.exports = function (io) {
                 console.log('user says', message);
             });
 
-
             /*=== HANDLE USER GOING OFFLINE ======================================================*/
             socket.on('disconnect', function () {
                 console.log('an user disconnected', socket.id);
 
                 // find the online user by socket.id
-                var onlineUserIndex = _.findIndex(onlineUsers, function (onlineUser) {
+                var onlineUserIndex = _.findIndex(sites[decodedUser.site], function (onlineUser) {
                     if (_.indexOf(onlineUser.sockets, socket.id) !== -1)
                         return true;
                 });
 
                 // find socket id index by socket.id
-                var onlineUserSocketIndex = _.indexOf(onlineUsers[onlineUserIndex].sockets, socket.id);
+                var onlineUserSocketIndex = _.indexOf(sites[decodedUser.site][onlineUserIndex].sockets, socket.id);
 
                 // remove the socket.id from that user
-                onlineUsers[onlineUserIndex].sockets.splice(onlineUserSocketIndex, 1);
+                sites[decodedUser.site][onlineUserIndex].sockets.splice(onlineUserSocketIndex, 1);
 
-                // if sum of socket id of that user equals 0, then remove that user
-                if (onlineUsers[onlineUserIndex].sockets.length === 0) {
-                    socket.broadcast.emit('an user comes offline', onlineUsers[onlineUserIndex].user);
-                    onlineUsers.splice(onlineUserIndex, 1);
+                // if sum of socket id of that user equals 0, then remove that user (come offline)
+                if (sites[decodedUser.site][onlineUserIndex].sockets.length === 0) {
+                    socket.broadcast.emit('an user comes offline', sites[decodedUser.site][onlineUserIndex].user);
+                    sites[decodedUser.site].splice(onlineUserIndex, 1);
                 }
 
-                console.log('onlineUsers', onlineUsers);
+                console.log('sites', sites[decodedUser.site]);
             });
             /*=====================================================================================*/
         })

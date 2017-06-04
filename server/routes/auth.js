@@ -1,16 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
-var jwtConfig = require('../config').jwt;
+var config = require('../config');
 
 var middleware = require('./middleware');
 var UserModel = require('../model/user');
 
 // just create a default account
-UserModel.createNewUser({
-    email: 'agent1@email.com',
-    password: '121212',
-    displayName: 'Agent 1',
+UserModel.createAgent({
+    email: 'giathinh910@gmail.com',
+    password: '131313',
+    displayName: 'Super Admin',
     level: 1
 });
 
@@ -36,9 +36,9 @@ router
         };
 
         var newUser = req.body;
-        newUser.level = 11;
+        newUser.level = config.userLevel.agent;
 
-        UserModel.createNewUser(newUser, function (err, result) {
+        UserModel.createAgent(newUser, function (err, result) {
             if (err) {
                 switch (err) {
                     case 'ValidationError':
@@ -78,13 +78,25 @@ router
             pageId: pageData.login.pageId
         };
 
-        UserModel.authenticate(req.body, function (err, user) {
+        UserModel.authenticateAgent(req.body, function (err, user) {
             if (err) {
                 switch (err) {
                     case 'ValidationError':
                         loginPageData.alerts = [{
                             type: 'warning',
-                            content: 'Please fill up all required information and make sure they are valid'
+                            content: 'Please fill up all required information and make sure they are valid.'
+                        }];
+                        break;
+                    case 'UserNotExisted':
+                        loginPageData.alerts = [{
+                            type: 'danger',
+                            content: 'User not existed.'
+                        }];
+                        break;
+                    default:
+                        loginPageData.alerts = [{
+                            type: 'danger',
+                            content: 'Login failed. Something wrong happened.'
                         }];
                         break;
                 }
@@ -101,7 +113,7 @@ router
                         _id: user._id,
                         email: user.email,
                         displayName: user.displayName
-                    }, jwtConfig.secret);
+                    }, config.jwt.secret);
                     res.cookie('token', token).redirect('/chat');
                 }
             }

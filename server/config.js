@@ -13,5 +13,10 @@ module.exports = {
     },
     session: {
         secret: secret
+    },
+    userLevel: {
+        admin: 1,
+        agent: 11,
+        customer: 21
     }
 };

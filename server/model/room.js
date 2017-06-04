@@ -5,12 +5,16 @@ var Schema = mongoose.Schema;
 
 var roomSchema = new Schema(
     {
-        name: String,
-        user: [{
+        displayName: String,
+        users: [{
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
-        }]
+        }],
+        site: {
+            type: Schema.Types.ObjectId,
+            ref: 'Site'
+        }
     },
     {
         timestamps: true
@@ -18,5 +22,11 @@ var roomSchema = new Schema(
 );
 
 var Room = mongoose.model('Room', roomSchema);
+
+Room.createOne = function (data, callback) {
+    Room.create(data, function (err, r) {
+        callback(err, r);
+    });
+};
 
 module.exports = Room;

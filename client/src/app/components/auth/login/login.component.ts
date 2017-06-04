@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     loginFormErrors = {
         'email': '',
         'password': '',
+        'site': '',
         'invalid': ''
     };
     loginFormValidationMessages = {
@@ -25,6 +26,9 @@ export class LoginComponent implements OnInit {
         },
         'password': {
             'required': 'Vui lòng nhập mật khẩu'
+        },
+        'site': {
+            'required': 'Vui lòng nhập site ID'
         }
     };
     submitted: boolean = false;
@@ -47,7 +51,8 @@ export class LoginComponent implements OnInit {
                 Validators.required,
                 Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
             ]],
-            password: ['121212', [Validators.required]]
+            password: ['121212', [Validators.required]],
+            site: ['', Validators.required]
         });
 
         this.loginForm.valueChanges.subscribe(data => this.onValueChanged(data));
@@ -84,7 +89,8 @@ export class LoginComponent implements OnInit {
                 this.csService.setUser(res);
                 this.router.navigateByUrl('/');
             } else {
-                this.loginFormErrors.invalid = 'Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại.';
+                console.log(res.error);
+                this.loginFormErrors.invalid = res.error;
             }
         });
     }

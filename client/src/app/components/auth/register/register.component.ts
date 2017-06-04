@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
         'email': '',
         'password': '',
         'displayName': '',
+        'site': '',
         'invalid': ''
     };
     registerFormValidationMessages = {
@@ -29,13 +30,16 @@ export class RegisterComponent implements OnInit {
         'displayName': {
             'required': 'Vui lòng nhập tên hiển thị'
         },
+        'site': {
+            'required': 'Vui lòng nhập site ID'
+        },
     };
     submitted: boolean = false;
     jwtHelper: JwtHelper = new JwtHelper();
 
     constructor(private authService: AuthService,
                 private formBuilder: FormBuilder,
-                private csService: StorageService,
+                private storageService: StorageService,
                 private router: Router) {
     }
 
@@ -51,7 +55,8 @@ export class RegisterComponent implements OnInit {
                 Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
             ]],
             password: ['121212', [Validators.required]],
-            displayName: ['Thinh Bui', [Validators.required]]
+            displayName: ['Thinh Bui', [Validators.required]],
+            site: ''
         });
 
         this.registerForm.valueChanges.subscribe(data => this.onValueChanged(data));
@@ -85,14 +90,11 @@ export class RegisterComponent implements OnInit {
         this.authService.register(this.registerForm.value).then(res => {
             this.submitted = false;
             if (!res.error) {
-                this.csService.setUser(res);
+                this.storageService.setUser(res);
                 this.router.navigateByUrl('/login');
             } else {
-                switch (res.error) {
-                    case 'EmailExisted':
-                        this.registerFormErrors.invalid = 'Email đã tồn tại!';
-                        break;
-                }
+                console.log(res.error);
+                this.registerFormErrors.invalid = res.error;
             }
         });
     }

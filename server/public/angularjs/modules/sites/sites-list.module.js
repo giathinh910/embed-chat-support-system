@@ -24,4 +24,8 @@ angular
         }, function errorCallback(res) {
             console.log(res.error);
         });
+
+        $scope.startChat = function() {
+
+        }
     });

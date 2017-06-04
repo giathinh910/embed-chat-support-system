@@ -74,7 +74,8 @@ Site.addOne = function (data, callback) {
                 })
         }
     ], function (err, result) {
-        callback(err, result);
+        if (callback)
+            callback(err, result);
     });
 };
 

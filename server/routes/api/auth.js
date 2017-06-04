@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var async = require('async');
 var jwt = require('jsonwebtoken');
-var jwtConfig = require('../../config').jwt;
+var config = require('../../config');
 
 var UserModel = require('../../model/user');
+var RoomModel = require('../../model/room');
 
 router
     .get('/me', function (req, res, next) {
@@ -14,35 +16,58 @@ router
             res.sendStatus(401);
     })
     .post('/register', function (req, res, next) {
-        var newUser = req.body;
-        newUser.level = 11;
+        async.waterfall([
+            function (callback) {
+                var newUser = req.body;
+                newUser.level = config.userLevel.customer;
 
-        UserModel.createNewUser(newUser, function (err, result) {
-            if (err) {
+                UserModel.createCustomer(newUser, function (err, result) {
+                    if (err)
+                        return callback(err, null);
+                    else
+                        callback(null, result)
+                });
+            },
+            function (user, callback) {
+                RoomModel.createOne({
+                    displayName: '',
+                    users: [user._id],
+                    site: user.site
+                }, function (err, result) {
+                    if (err)
+                        return callback(err, null);
+                    else
+                        callback(null, result)
+                });
+            }
+        ], function (err, result) {
+            if (err)
                 res.send({
                     error: err
                 });
-            } else
-                res.send(result);
+            else
+                res.send(result)
         });
     })
     .post('/login', function (req, res, next) {
-        UserModel.authenticate(req.body, function (err, user) {
+        UserModel.authenticateCustomer(req.body, function (err, user) {
             if (user) {
                 req.session.user = user;
                 var token = jwt.sign({
                     _id: user._id,
                     email: user.email,
-                    displayName: user.displayName
-                }, jwtConfig.secret);
+                    displayName: user.displayName,
+                    site: user.site
+                }, config.jwt.secret);
                 res.send({
                     'token': token,
                     id: user._id,
                     email: user.email,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    site: user.site
                 });
             } else {
-                res.status(404).send({
+                res.send({
                     error: 'InvalidCredential'
                 });
             }
