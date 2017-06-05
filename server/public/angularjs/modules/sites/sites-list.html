@@ -6,10 +6,11 @@
 <div class="container">
     <div class="card">
         <div class="card-block">
-            <table class="table">
+            <table class="table table-sm">
                 <thead class="thead-default">
                 <tr>
                     <th>#</th>
+                    <th>ID</th>
                     <th>Domain</th>
                     <th>Name</th>
                     <th class="text-center">Online User</th>
@@ -19,12 +20,13 @@
                 <tbody>
                 <tr ng-repeat="site in sites">
                     <th scope="row">{{$index + 1}}</th>
+                    <td>{{site._id}}</td>
                     <td>{{site.domain}}</td>
                     <td>{{site.displayName}}</td>
                     <td class="text-center">n/a</td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                            <button ng-click="startChat(site.domain)" type="button" class="btn btn-primary">Chat</button>
+                            <button ng-click="startChat(site._id)" type="button" class="btn btn-primary">Chat</button>
                             <button type="button" class="btn btn-info">Detail</button>
                             <button type="button" class="btn btn-danger">Delete</button>
                         </div>

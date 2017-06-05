@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3001/api',
-  chatSocketUrl: 'http://localhost:3001/ws/chat',
+  chatSocketUrl: 'http://localhost:3001/ws/customer-chat',
 };
