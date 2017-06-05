@@ -4,8 +4,6 @@ networks:
 services:
   mongo:
     image: mongo
-    #volumes:
-    #  - /Volumes/DEV/database/mongodb:/data/db
     ports:
       - "27017:27017"
     networks:
@@ -18,11 +16,22 @@ services:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "3001:3000"
+      - "3000:3000"
     depends_on:
       - "mongo"
     environment:
       - DEBUG=server:*
+    networks:
+      - isolated-network
+  angular-agent:
+    build:
+      context: ./angular-agent
+      dockerfile: Dockerfile
+    volumes:
+      - ./angular-agent:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:4200"
     networks:
       - isolated-network
   client:
@@ -33,6 +42,6 @@ services:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "3000:4200"
+      - "3002:4200"
     networks:
       - isolated-network
