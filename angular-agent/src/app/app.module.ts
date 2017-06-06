@@ -11,6 +11,7 @@ import { AuthModule } from "./auth/auth.module";
 import { StorageService } from "./global/services/storage.service";
 import { SiteModule } from "./site/site.module";
 import { AuthService } from "./auth/services/auth.service";
+import { ChatModule } from './chat/chat.module';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { AuthService } from "./auth/services/auth.service";
         AppRoutingModule,
         LayoutModule,
         AuthModule,
-        SiteModule
+        SiteModule,
+        ChatModule
     ],
     providers: [
         AuthService,

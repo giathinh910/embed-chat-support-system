@@ -79,4 +79,14 @@ Site.addOne = function (data, callback) {
     });
 };
 
+Site.getOne = function (siteId, callback) {
+    Site
+        .findOne({
+            _id: siteId
+        })
+        .exec(function (err, site) {
+            callback(err, site);
+        });
+};
+
 module.exports = Site;

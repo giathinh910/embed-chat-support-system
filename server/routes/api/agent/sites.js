@@ -17,6 +17,16 @@ router
                 res.send(r);
         });
     })
+    .get('/:siteId', middleware.isTokenValid, function (req, res, next) {
+        SiteModel.getOne(req.params.siteId, function (err, r) {
+            if (err)
+                res.send({
+                    error: err
+                });
+            else
+                res.send(r);
+        });
+    })
     .post('/', middleware.isTokenValid, function (req, res, next) {
         var newSite = req.body;
         newSite.user = req.user._id;

@@ -35,6 +35,14 @@ export class SiteService {
             .catch(this.handleError)
     }
 
+    getOne(siteId: string): Promise<any> {
+        return this.http
+            .get(`${this.apiUrl}/${siteId}`)
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handleError)
+    }
+
     private handleError(error: any): Promise<any> {
         console.log('An error occurred:', error); // for demo purposes only
         // return;

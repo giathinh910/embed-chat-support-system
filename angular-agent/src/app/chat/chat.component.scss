@@ -1,0 +1,40 @@
+@import '../../assets/scss/bootstrap/bootstrap';
+
+.tb-chat-frame {
+  .entry-messages {
+    background: #f5f5f5;
+    border: 1px solid $blue;
+    height: 500px;
+    margin-bottom: 15px;
+    border-radius: $border-radius;
+    padding: 1rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    .entry-message {
+      .entry-content {
+        display: block;
+        width: auto;
+        max-width: 70%;
+        background: #fff;
+        margin-bottom: 1rem;
+        padding: .5rem 1rem;
+        border-radius: $border-radius-lg;
+      }
+      .entry-author {
+        font-weight: 600;
+        display: block;
+        margin-bottom: .5rem;
+      }
+      &.is-me {
+        .entry-author {
+          text-align: right;
+        }
+        .entry-content {
+          float: right;
+          background: $blue;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+<div class="container mt-4">
+    <h2 *ngIf="site" class="app-page-title mb-4">{{site.displayName}} - {{site.domain}}</h2>
+
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <h6 class="font-weight-bold mb-0">Client Name</h6>
+                        <span class="badge badge-success badge-pill">online</span>
+                    </div>
+                    <p class="mb-1">Hello, I'm client</p>
+                    <!--<small>3 days ago</small>-->
+                </a>
+                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <h6 class="font-weight-bold mb-0">Client Name</h6>
+                        <span class="badge badge-default badge-pill">offline</span>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus</p>
+                    <!--<small>3 days ago</small>-->
+                </a>
+                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <h6 class="font-weight-bold mb-0">Client Name</h6>
+                        <span class="badge badge-default badge-pill">offline</span>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus</p>
+                    <!--<small>3 days ago</small>-->
+                </a>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-8">
+            <div class="tb-chat-frame">
+                <div #messagesDiv class="entry-messages">
+                    <div *ngFor="let message of messages; let last = last" class="entry-message clearfix">
+                        <span class="entry-author">{{message.createdBy.displayName}}</span>
+                        <div class="entry-content">{{message.content}}</div>
+                        <ng-container *ngIf="last">{{scrollMessagesToBottom(last)}}</ng-container>
+                    </div>
+                    <!--<div class="entry-message clearfix is-me">-->
+                        <!--<span class="entry-author">Thinh Bui</span>-->
+                        <!--<div class="entry-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci-->
+                            <!--beatae cupiditate deserunt est ipsa libero quibusdam sit veritatis vitae?-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="entry-message clearfix">-->
+                        <!--<span class="entry-author">Jane Doe</span>-->
+                        <!--<div class="entry-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci-->
+                            <!--beatae cupiditate deserunt est ipsa libero quibusdam sit veritatis vitae?-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <form [formGroup]="chatForm" (submit)="onSubmit()" class="input-group">
+                    <input formControlName="content" type="text" class="form-control" placeholder="Type and press enter to send ...">
+                    <span class="input-group-btn">
+                        <button [disabled]="!chatForm.valid || submitted" class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i> SEND</button>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
