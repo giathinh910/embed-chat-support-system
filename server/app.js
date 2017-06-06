@@ -52,9 +52,12 @@ app.use('/', require('./routes/auth'));
 app.use('/sites', require('./routes/site'));
 app.use('/chat', require('./routes/chat'));
 app.use('/api', require('./routes/api/cors'));
-app.use('/api/auth', require('./routes/api/auth'));
-app.use('/api/sites', require('./routes/api/sites'));
-app.use('/api/chat', require('./routes/api/chat'));
+
+app.use('/api/agent/auth', require('./routes/api/agent/auth'));
+
+app.use('/api/customer/auth', require('./routes/api/customer/auth'));
+app.use('/api/customer/sites', require('./routes/api/customer/sites'));
+app.use('/api/customer/chat', require('./routes/api/customer/chat'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

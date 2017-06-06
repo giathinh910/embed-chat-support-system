@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var middleware = require('./middleware');
 
-var SiteModel = require('../../model/site');
+var SiteModel = require('../../../model/site');
 
 router.use(middleware.isTokenValidated)
     .get('/', function (req, res, next) {

@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-var jwtConfig = require('../../config').jwt;
+var jwtConfig = require('../../../config').jwt;
 
 module.exports = {
     isTokenValidated: function (req, res, next) {

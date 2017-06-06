@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 var async = require('async');
 var jwt = require('jsonwebtoken');
-var config = require('../../config');
+var config = require('../../../config');
 
-var UserModel = require('../../model/user');
-var RoomModel = require('../../model/room');
+var UserModel = require('../../../model/user');
+var RoomModel = require('../../../model/room');
 
 router
     .get('/me', function (req, res, next) {
