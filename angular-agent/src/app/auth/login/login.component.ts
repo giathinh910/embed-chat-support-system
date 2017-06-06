@@ -19,11 +19,11 @@ export class LoginComponent implements OnInit {
     };
     loginFormValidationMessages = {
         'email': {
-            'required': 'Vui lòng nhập email',
-            'pattern': 'Email phải có định dạng email@example.com'
+            'required': 'Please enter email',
+            'pattern': 'Email must be in email@example.com format'
         },
         'password': {
-            'required': 'Vui lòng nhập mật khẩu'
+            'required': 'Please enter password'
         }
     };
     submitted: boolean = false;

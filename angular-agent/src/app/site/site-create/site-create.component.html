@@ -1,3 +1,35 @@
-<p>
-  site-create works!
-</p>
+<div class="card">
+    <div class="card-block">
+        <div class="row d-sm-flex justify-content-sm-center">
+            <div class="col-xs-12 col-sm-8 col-md-6">
+                <h4 class="card-title">Add new website</h4>
+                <form [formGroup]="siteCreateForm" (submit)="onSubmit()">
+                    <div [ngClass]="{'has-danger': siteCreateFormErrors.domain}" class="form-group">
+                        <label class="col-form-label">Domain</label>
+                        <input formControlName="domain" type="text" class="form-control form-control"
+                               placeholder="Example: facebook.com">
+                        <small *ngIf="siteCreateFormErrors.domain" class="form-control-feedback">{{
+                            siteCreateFormErrors.domain }}
+                        </small>
+                    </div>
+                    <div [ngClass]="{'has-danger': siteCreateFormErrors.displayName}" class="form-group">
+                        <label class="col-form-label">Password</label>
+                        <input formControlName="displayName" type="text" class="form-control form-control"
+                               placeholder="Example: Facebook">
+                        <small *ngIf="siteCreateFormErrors.displayName" class="form-control-feedback">{{
+                            siteCreateFormErrors.displayName
+                            }}
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="!siteCreateForm.valid || submitted" type="submit"
+                                class="btn btn-success d-block text-center"
+                                style="width: 100%">
+                            Add website
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

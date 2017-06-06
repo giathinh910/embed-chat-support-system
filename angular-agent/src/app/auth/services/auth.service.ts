@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 
 @Injectable()
 export class AuthService {
-    private apiUrl = environment.apiUrl + '/agent/auth';
+    private apiUrl = environment.apiUrl + '/auth';
     private headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(private http: Http,

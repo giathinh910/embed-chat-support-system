@@ -7,10 +7,11 @@ import { SiteComponent } from './site.component';
 import { SiteListComponent } from './site-list/site-list.component';
 import { SiteCreateComponent } from './site-create/site-create.component';
 import { SiteDetailComponent } from './site-detail/site-detail.component';
+import { SiteService } from './services/site.service';
 
 const routes: Routes = [
     {
-        path: 'site',
+        path: 'sites',
         component: SiteComponent,
         canActivate: [AuthGuardService],
         children: [
@@ -47,7 +48,8 @@ const routes: Routes = [
         SiteDetailComponent
     ],
     providers: [
-        AuthGuardService
+        AuthGuardService,
+        SiteService
     ]
 })
 export class SiteModule {

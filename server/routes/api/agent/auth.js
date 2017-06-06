@@ -33,13 +33,15 @@ router
                 var token = jwt.sign({
                     _id: user._id,
                     email: user.email,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    level: user.level
                 }, config.jwt.secret);
                 res.send({
                     'token': token,
                     id: user._id,
                     email: user.email,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    level: user.level
                 });
             } else {
                 res.send({

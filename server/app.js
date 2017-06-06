@@ -54,6 +54,7 @@ app.use('/chat', require('./routes/chat'));
 app.use('/api', require('./routes/api/cors'));
 
 app.use('/api/agent/auth', require('./routes/api/agent/auth'));
+app.use('/api/agent/sites', require('./routes/api/agent/sites'));
 
 app.use('/api/customer/auth', require('./routes/api/customer/auth'));
 app.use('/api/customer/sites', require('./routes/api/customer/sites'));

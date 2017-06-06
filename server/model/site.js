@@ -38,7 +38,7 @@ Site.getList = function (params, callback) {
     Site
         .find({user: options.user})
         .skip(skip)
-        .limit(options.perPage)
+        .limit(parseInt(options.perPage))
         .sort({
             _id: -1
         })
