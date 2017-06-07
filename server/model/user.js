@@ -220,6 +220,9 @@ User.searchAgents = function (params, callback) {
                 $nin: [searchParams.reqUser._id]
             }
         })
+        .sort({
+            email: 1
+        })
         .select('_id email displayName')
         .exec(function (err, users) {
             callback(err, users);

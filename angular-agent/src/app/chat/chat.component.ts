@@ -38,6 +38,7 @@ export class ChatComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
             this.siteService.getOne(params.siteId).then(res => {
                 this.site = res;
+                console.log(res);
             })
         });
         this.messages = [

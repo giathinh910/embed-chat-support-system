@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SiteService } from '../services/site.service';
 import { ActivatedRoute } from '@angular/router';
+import { StorageService } from "../../global/services/storage.service";
 
 @Component({
     selector: 'agent-site-detail',
@@ -11,7 +12,8 @@ export class SiteDetailComponent implements OnInit {
     site: any;
 
     constructor(private siteService: SiteService,
-                private activatedRoute: ActivatedRoute) {
+                private activatedRoute: ActivatedRoute,
+                private storageService: StorageService) {
     }
 
     ngOnInit() {
@@ -36,6 +38,10 @@ export class SiteDetailComponent implements OnInit {
         this.siteService.unassignAgent(this.site._id, agent).then(res => {
             this.getList();
         });
+    }
+
+    isOwner(site) {
+        return site.user._id == this.storageService.getUserId();
     }
 
 }

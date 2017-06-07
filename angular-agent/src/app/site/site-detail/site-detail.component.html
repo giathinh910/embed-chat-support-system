@@ -1,20 +1,20 @@
 <div *ngIf="site" class="card">
     <div class="card-header d-sm-flex justify-content-sm-between">
         <span>{{site.displayName}} - {{site.domain}}</span>
-        <a routerLink="/sites/create" class="btn btn-success btn-sm">Add Site</a>
+        <span *ngIf="!isOwner(site)">Owner: <strong>{{site.user.displayName}}</strong></span>
     </div>
     <div class="card-block">
         <div class="row">
             <div class="col-xs-12 col-sm-8">
                 <h4 class="card-title">Agents in this site</h4>
-                <agent-agent-search (onAgentSelected)="assignAgent($event)"></agent-agent-search>
+                <agent-agent-search *ngIf="isOwner(site)" (onAgentSelected)="assignAgent($event)"></agent-agent-search>
                 <table class="table mt-3">
                     <thead>
                     <tr>
                         <th>#</th>
                         <th>Email</th>
                         <th>Display Name</th>
-                        <th class="text-center" style="width: 5rem">Actions</th>
+                        <th *ngIf="isOwner(site)" class="text-center" style="width: 5rem">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -22,7 +22,7 @@
                         <th scope="row">{{agentIndex + 1}}</th>
                         <td>{{agent.email}}</td>
                         <td>{{agent.displayName}}</td>
-                        <td class="text-center"><a (click)="unassignAgent(agent); $event.preventDefault()" href="#" class="btn btn-danger btn-sm">Unassign</a></td>
+                        <td *ngIf="isOwner(site)" class="text-center"><a (click)="unassignAgent(agent); $event.preventDefault()" href="#" class="btn btn-danger btn-sm">Unassign</a></td>
                     </tr>
                     </tbody>
                 </table>

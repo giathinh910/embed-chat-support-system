@@ -9,6 +9,7 @@ import { SiteCreateComponent } from './site-create/site-create.component';
 import { SiteDetailComponent } from './site-detail/site-detail.component';
 import { SiteService } from './services/site.service';
 import { AgentModule } from '../agent/agent.module';
+import { SiteAssignedListComponent } from './site-assigned-list/site-assigned-list.component';
 
 const routes: Routes = [
     {
@@ -19,6 +20,11 @@ const routes: Routes = [
             {
                 path: '',
                 component: SiteListComponent,
+                canActivate: [AuthGuardService]
+            },
+            {
+                path: 'assigned',
+                component: SiteAssignedListComponent,
                 canActivate: [AuthGuardService]
             },
             {
@@ -47,7 +53,8 @@ const routes: Routes = [
         SiteComponent,
         SiteListComponent,
         SiteCreateComponent,
-        SiteDetailComponent
+        SiteDetailComponent,
+        SiteAssignedListComponent
     ],
     providers: [
         AuthGuardService,

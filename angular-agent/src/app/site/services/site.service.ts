@@ -14,6 +14,10 @@ export class SiteService {
         let url = this.apiUrl,
             queryParamsArr = [];
 
+        if (params.getAssignedSites) {
+            url += '/assigned';
+        }
+
         queryParamsArr.push(params.perPage ? `perPage=${params.perPage}` : 'perPage=10');
         queryParamsArr.push(params.page ? `page=${params.page}` : 'page=1');
 
@@ -54,6 +58,14 @@ export class SiteService {
     unassignAgent(siteId, agent): Promise<any> {
         return this.http
             .put(`${this.apiUrl}/${siteId}/users/unassign/`, agent)
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handleError)
+    }
+
+    selfUnassignAgent(siteId): Promise<any> {
+        return this.http
+            .put(`${this.apiUrl}/${siteId}/users/self-unassign/`, null)
             .toPromise()
             .then(res => res.json())
             .catch(this.handleError)

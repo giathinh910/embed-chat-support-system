@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header d-sm-flex justify-content-sm-between">
+        <span>Website</span>
+        <a routerLink="/sites/create" class="btn btn-success btn-sm">Add Site</a>
+    </div>
+    <div class="card-block">
+        <table class="table table-sm">
+            <thead class="thead-default">
+            <tr>
+                <th>ID</th>
+                <th>Domain</th>
+                <th>Display Name</th>
+                <th class="text-center" style="width: 10rem;">Actions</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="sites">
+            <tr *ngFor="let site of sites; let siteIndex = index">
+                <th scope="row">{{site._id}}</th>
+                <td>{{site.domain}}</td>
+                <td>{{site.displayName}}</td>
+                <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
+                        <button [disabled]="storageService.getUserId() === site.user"
+                           (click)="leaveSite(site._id, siteIndex)"
+                           href="#" class="btn btn-danger">Leave Site</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

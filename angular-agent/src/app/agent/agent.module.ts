@@ -5,9 +5,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from "app/auth/services/auth-guard.service";
 import { AgentService } from './services/agent.service';
 import { AgentComponent } from './agent.component';
-import { AgentListComponent } from './agent-list/agent-list.component';
-import { AgentCreateComponent } from './agent-create/agent-create.component';
-import { AgentDetailComponent } from './agent-detail/agent-detail.component';
 import { AgentSearchComponent } from './agent-search/agent-search.component';
 
 const routes: Routes = [
@@ -27,9 +24,6 @@ const routes: Routes = [
     ],
     declarations: [
         AgentComponent,
-        AgentListComponent,
-        AgentCreateComponent,
-        AgentDetailComponent,
         AgentSearchComponent
     ],
     providers: [
