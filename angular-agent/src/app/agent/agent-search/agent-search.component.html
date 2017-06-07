@@ -1,0 +1,10 @@
+<div class="tb-live-search">
+    <input [(ngModel)]="currentSearchTerm" (keyup)="search()" type="text" placeholder="Search agent to assign ..." class="form-control">
+    <div class="entry-results">
+        <div *ngIf="agents && agents.length" class="entry-results-inner">
+            <div *ngFor="let agent of agents | slice:0:9" (click)="selectAgent(agent)" class="entry-result d-flex justify-content-between">
+                <span style="line-height: 25px">{{agent.email}}</span>
+            </div>
+        </div>
+    </div>
+</div>

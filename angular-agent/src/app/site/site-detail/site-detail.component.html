@@ -1,3 +1,36 @@
-<p>
-  site-detail works!
-</p>
+<div *ngIf="site" class="card">
+    <div class="card-header d-sm-flex justify-content-sm-between">
+        <span>{{site.displayName}} - {{site.domain}}</span>
+        <a routerLink="/sites/create" class="btn btn-success btn-sm">Add Site</a>
+    </div>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <h4 class="card-title">Agents in this site</h4>
+                <agent-agent-search (onAgentSelected)="assignAgent($event)"></agent-agent-search>
+                <table class="table mt-3">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Email</th>
+                        <th>Display Name</th>
+                        <th class="text-center" style="width: 5rem">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let agent of site.agents; let agentIndex = index">
+                        <th scope="row">{{agentIndex + 1}}</th>
+                        <td>{{agent.email}}</td>
+                        <td>{{agent.displayName}}</td>
+                        <td class="text-center"><a (click)="unassignAgent(agent); $event.preventDefault()" href="#" class="btn btn-danger btn-sm">Unassign</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <h4 class="card-title">Embed code</h4>
+                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum exercitationem possimus reiciendis tempora voluptates! Aspernatur at distinctio error hic laboriosam nihil obcaecati, quasi reiciendis reprehenderit sequi sint suscipit voluptate. Hic!</div>
+            </div>
+        </div>
+    </div>
+</div>

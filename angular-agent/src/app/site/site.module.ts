@@ -8,6 +8,7 @@ import { SiteListComponent } from './site-list/site-list.component';
 import { SiteCreateComponent } from './site-create/site-create.component';
 import { SiteDetailComponent } from './site-detail/site-detail.component';
 import { SiteService } from './services/site.service';
+import { AgentModule } from '../agent/agent.module';
 
 const routes: Routes = [
     {
@@ -26,7 +27,7 @@ const routes: Routes = [
                 canActivate: [AuthGuardService]
             },
             {
-                path: ':id',
+                path: ':siteId',
                 component: SiteDetailComponent,
                 canActivate: [AuthGuardService]
             }
@@ -39,7 +40,8 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        AgentModule
     ],
     declarations: [
         SiteComponent,

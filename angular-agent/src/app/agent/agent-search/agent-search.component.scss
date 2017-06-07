@@ -1,0 +1,23 @@
+@import "../../../assets/bootstrap/scss/bootstrap";
+
+.tb-live-search {
+  position: relative;
+  .entry-results {
+    position: absolute;
+    width: 100%;
+    top: 35px;
+    left: 0;
+    background: #fff;
+    box-shadow: $dropdown-box-shadow;
+    cursor: pointer;
+    .entry-results-inner {
+      padding: .5rem 0;
+      .entry-result {
+        padding: .2rem .5rem;
+        &:hover {
+          background: rgba(0,0,0,.05);
+        }
+      }
+    }
+  }
+}

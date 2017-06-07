@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var async = require('async');
 var bcryptConfig = require('../config').bcrypt;
 var bcrypt = require('bcrypt');
+var extend = require('extend');
 var config = require('../config');
 
 var SiteModel = require('./site');
@@ -203,6 +204,26 @@ User.authenticateCustomer = function (inputUser, callback) {
         if (callback)
             callback(err, result);
     });
+};
+
+User.searchAgents = function (params, callback) {
+    var searchParams = extend({
+        term: ''
+    }, params);
+    User
+        .find({
+            email: {
+                $regex: searchParams.term,
+                $options: 'i'
+            },
+            _id: {
+                $nin: [searchParams.reqUser._id]
+            }
+        })
+        .select('_id email displayName')
+        .exec(function (err, users) {
+            callback(err, users);
+        });
 };
 
 module.exports = User;

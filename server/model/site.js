@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var async = require('async');
 var extend = require('extend');
+var _ = require('lodash');
 
 var Schema = mongoose.Schema;
 
@@ -18,7 +19,11 @@ var messageSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
-        }
+        },
+        agents: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }]
     },
     {
         timestamps: true
@@ -42,11 +47,29 @@ Site.getList = function (params, callback) {
         .sort({
             _id: -1
         })
+        .populate({
+            path: 'agents',
+            select: '_id email displayName'
+        })
         .exec(function (err, sites) {
             if (err)
                 console.log(err);
             else
                 callback(null, sites);
+        });
+};
+
+Site.getOne = function (siteId, callback) {
+    Site
+        .findOne({
+            _id: siteId
+        })
+        .populate({
+            path: 'agents',
+            select: '_id email displayName'
+        })
+        .exec(function (err, site) {
+            callback(err, site);
         });
 };
 
@@ -60,18 +83,15 @@ Site.addOne = function (data, callback) {
                 })
                 .exec(function (err, site) {
                     if (err)
-                        console.log(err);
+                        return callback('SiteExisted', null);
                     else
                         callback(null, site);
                 });
         },
         function (site, callback) {
-            if (site)
-                callback('SiteExisted', null);
-            else
-                Site.create(data, function (err, doc) {
-                    callback(err, doc);
-                })
+            Site.create(data, function (err, doc) {
+                callback(err, doc);
+            })
         }
     ], function (err, result) {
         if (callback)
@@ -79,14 +99,43 @@ Site.addOne = function (data, callback) {
     });
 };
 
-Site.getOne = function (siteId, callback) {
-    Site
-        .findOne({
-            _id: siteId
-        })
-        .exec(function (err, site) {
+Site.assignAgent = function (data, callback) {
+    Site.findById(data.siteId, function (err, site) {
+        if (err) {
             callback(err, site);
+            return;
+        }
+        if (_.findIndex(site.agents, mongoose.Types.ObjectId(data.agentId)) === -1) {
+            site.agents.unshift(data.agentId);
+        }
+        site.save(function (err, updatedSite) {
+            if (err) {
+                callback(err, updatedSite);
+                return;
+            }
+            callback(err, updatedSite);
         });
+    });
+};
+
+Site.unassignAgent = function (data, callback) {
+    Site.findById(data.siteId, function (err, site) {
+        if (err) {
+            callback(err, site);
+            return;
+        }
+        var agentIndex = _.findIndex(site.agents, mongoose.Types.ObjectId(data.agentId));
+        if (agentIndex > -1) {
+            site.agents.splice(agentIndex, 1);
+        }
+        site.save(function (err, updatedSite) {
+            if (err) {
+                callback(err, updatedSite);
+                return;
+            }
+            callback(err, updatedSite);
+        });
+    });
 };
 
 module.exports = Site;

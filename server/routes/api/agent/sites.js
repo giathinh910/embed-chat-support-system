@@ -27,6 +27,34 @@ router
                 res.send(r);
         });
     })
+    .put('/:siteId/users/assign', middleware.isTokenValid, function (req, res, next) {
+        var data = {
+            siteId: req.params.siteId,
+            agentId: req.body._id
+        };
+        SiteModel.assignAgent(data, function (err, r) {
+            if (err)
+                res.send({
+                    error: err
+                });
+            else
+                res.send(r);
+        });
+    })
+    .put('/:siteId/users/unassign', middleware.isTokenValid, function (req, res, next) {
+        var data = {
+            siteId: req.params.siteId,
+            agentId: req.body._id
+        };
+        SiteModel.unassignAgent(data, function (err, r) {
+            if (err)
+                res.send({
+                    error: err
+                });
+            else
+                res.send(r);
+        });
+    })
     .post('/', middleware.isTokenValid, function (req, res, next) {
         var newSite = req.body;
         newSite.user = req.user._id;

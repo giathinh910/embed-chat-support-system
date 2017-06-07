@@ -43,6 +43,22 @@ export class SiteService {
             .catch(this.handleError)
     }
 
+    assignAgent(siteId, agent): Promise<any> {
+        return this.http
+            .put(`${this.apiUrl}/${siteId}/users/assign/`, agent)
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handleError)
+    }
+
+    unassignAgent(siteId, agent): Promise<any> {
+        return this.http
+            .put(`${this.apiUrl}/${siteId}/users/unassign/`, agent)
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handleError)
+    }
+
     private handleError(error: any): Promise<any> {
         console.log('An error occurred:', error); // for demo purposes only
         // return;
