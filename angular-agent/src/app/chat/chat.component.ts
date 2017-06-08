@@ -25,6 +25,7 @@ export class ChatComponent implements OnInit {
     submitted: boolean = false;
     messages: any[];
     @ViewChild('messagesDiv') private messagesDivER: ElementRef;
+    socketStatus: boolean = false;
 
     constructor(private chatService: ChatService,
                 private siteService: SiteService,
@@ -38,7 +39,6 @@ export class ChatComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
             this.siteService.getOne(params.siteId).then(res => {
                 this.site = res;
-                console.log(res);
             })
         });
         this.messages = [
@@ -103,6 +103,10 @@ export class ChatComponent implements OnInit {
         this.chatService.messages$.subscribe(message => {
             console.log(message);
             this.submitted = false;
+        });
+
+        this.chatService.socketStatus$.subscribe(socketStatus => {
+            this.socketStatus = socketStatus
         });
     }
 

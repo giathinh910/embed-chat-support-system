@@ -1,5 +1,11 @@
 <div class="container mt-4">
-    <h2 *ngIf="site" class="app-page-title mb-4">{{site.displayName}} - {{site.domain}}</h2>
+    <h2 *ngIf="site" class="app-page-title mb-4 d-sm-flex justify-content-sm-between">
+        {{site.displayName}} - {{site.domain}}
+        <span [ngClass]="{'badge-success': socketStatus, 'badge-danger': !socketStatus}" class="badge badge-pill">
+            <span *ngIf="socketStatus">connected</span>
+            <span *ngIf="!socketStatus">disconnected</span>
+        </span>
+    </h2>
 
     <div class="row">
         <div class="col-12 col-md-4">

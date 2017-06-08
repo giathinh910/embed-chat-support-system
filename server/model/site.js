@@ -102,7 +102,7 @@ Site.getOne = function (data, callback) {
             if (err)
                 return callback(err, null);
             if (!site)
-                callback(null, []);
+                callback(null, {});
             else
                 callback(null, site);
         });
@@ -147,7 +147,7 @@ Site.assignAgent = function (data, callback) {
             }
 
             if (!site) {
-                callback(err, []);
+                callback(err, {});
                 return;
             }
 
@@ -177,7 +177,7 @@ Site.unassignAgent = function (data, callback) {
             }
 
             if (!site) {
-                callback(err, []);
+                callback(err, {});
                 return;
             }
 
@@ -209,7 +209,7 @@ Site.selfUnassignAgent = function (data, callback) {
                 return;
             }
             if (!site)
-                callback(err, []);
+                callback(err, {});
             else {
                 var agentIndex = _.findIndex(site.agents, mongoose.Types.ObjectId(data.reqUser._id));
                 site.agents.splice(agentIndex, 1);
