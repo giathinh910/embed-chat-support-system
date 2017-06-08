@@ -1,7 +1,7 @@
 <div *ngIf="site" class="card">
     <div class="card-header d-sm-flex justify-content-sm-between">
         <span>{{site.displayName}} - {{site.domain}}</span>
-        <span *ngIf="!isOwner(site)">Owner: <strong>{{site.user.displayName}}</strong></span>
+        <span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>
     </div>
     <div class="card-block">
         <div class="row">

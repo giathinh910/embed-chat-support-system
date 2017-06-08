@@ -58,7 +58,6 @@ app.use('/api/agent/sites', require('./routes/api/agent/sites'));
 app.use('/api/agent/users', require('./routes/api/agent/users'));
 
 app.use('/api/customer/auth', require('./routes/api/customer/auth'));
-app.use('/api/customer/sites', require('./routes/api/customer/sites'));
 app.use('/api/customer/chat', require('./routes/api/customer/chat'));
 
 // catch 404 and forward to error handler

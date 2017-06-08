@@ -20,7 +20,7 @@
                 <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group">
                         <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
-                        <button [disabled]="storageService.getUserId() === site.user"
+                        <button [disabled]="storageService.getUserId() === site.owner"
                            (click)="leaveSite(site._id, siteIndex)"
                            href="#" class="btn btn-danger">Leave Site</button>
                     </div>

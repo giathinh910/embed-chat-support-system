@@ -50,28 +50,52 @@ router
         });
     })
     .post('/login', function (req, res, next) {
-        UserModel.authenticateCustomer(req.body, function (err, user) {
-            if (user) {
+        async.waterfall([
+            function (callback) {
+                UserModel.authenticateCustomer(req.body, function (err, user) {
+                    if (err)
+                        return callback(err, null);
+                    else {
+                        if (user)
+                            callback(null, user);
+                        else
+                            return callback('InvalidCredential', {})
+                    }
+                });
+            },
+            function (user, callback) {
+                RoomModel.getOneByCustomerId(user._id, function (err, room) {
+                    if (err)
+                        return callback(err, null);
+                    else
+                        callback(null, user, room);
+                })
+            },
+            function (user, room, callback) {
                 req.session.user = user;
                 var token = jwt.sign({
                     _id: user._id,
                     email: user.email,
                     displayName: user.displayName,
-                    site: user.site
+                    site: user.site,
+                    room: room
                 }, config.jwt.secret);
                 res.send({
                     'token': token,
                     id: user._id,
                     email: user.email,
-                    displayName: user.displayName,
-                    site: user.site
-                });
-            } else {
-                res.send({
-                    error: 'InvalidCredential'
+                    displayName: user.displayName
                 });
             }
+        ], function (err, result) {
+            if (err)
+                res.send({
+                    error: err
+                });
+            else
+                res.send(result)
         });
+
     });
 
 module.exports = router;

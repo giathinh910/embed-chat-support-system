@@ -13,6 +13,7 @@ import { SiteModule } from "./site/site.module";
 import { AuthService } from "./auth/services/auth.service";
 import { ChatModule } from './chat/chat.module';
 import { AgentModule } from './agent/agent.module';
+import { CustomerModule } from './customer/customer.module';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { AgentModule } from './agent/agent.module';
         AuthModule,
         SiteModule,
         ChatModule,
-        AgentModule
+        AgentModule,
+        CustomerModule
     ],
     providers: [
         AuthService,

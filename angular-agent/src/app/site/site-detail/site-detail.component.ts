@@ -41,7 +41,7 @@ export class SiteDetailComponent implements OnInit {
     }
 
     isOwner(site) {
-        return site.user._id == this.storageService.getUserId();
+        return site.owner._id == this.storageService.getUserId();
     }
 
 }

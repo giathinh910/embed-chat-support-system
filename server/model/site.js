@@ -15,7 +15,7 @@ var messageSchema = new Schema(
             type: String,
             required: true
         },
-        user: {
+        owner: {
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
@@ -44,13 +44,13 @@ Site.getList = function (params, callback) {
 
     // Finding condition
     var findingCondition = {
-        user: data.reqUser._id
+        owner: data.reqUser._id
     };
     if (data.getAssignedSites)
         findingCondition = {
             $or: [
                 {
-                    user: data.reqUser._id
+                    owner: data.reqUser._id
                 },
                 {
                     agents: {
@@ -68,10 +68,7 @@ Site.getList = function (params, callback) {
             _id: -1
         })
         .exec(function (err, sites) {
-            if (err)
-                console.log(err);
-            else
-                callback(null, sites);
+            callback(err, sites);
         });
 };
 
@@ -81,7 +78,7 @@ Site.getOne = function (data, callback) {
             _id: data.siteId,
             $or: [
                 {
-                    user: data.reqUser._id
+                    owner: data.reqUser._id
                 },
                 {
                     agents: {
@@ -91,7 +88,7 @@ Site.getOne = function (data, callback) {
             ]
         })
         .populate({
-            path: 'user',
+            path: 'owner',
             select: '_id email displayName'
         })
         .populate({
@@ -114,7 +111,7 @@ Site.addOne = function (data, callback) {
             Site
                 .findOne({
                     domain: data.domain,
-                    user: data.user
+                    owner: data.owner
                 })
                 .exec(function (err, site) {
                     if (err)
@@ -138,7 +135,7 @@ Site.assignAgent = function (data, callback) {
     Site
         .findOne({
             _id: data.siteId,
-            user: data.reqUser._id
+            owner: data.reqUser._id
         })
         .exec(function (err, site) {
             if (err) {
@@ -168,7 +165,7 @@ Site.unassignAgent = function (data, callback) {
     Site
         .findOne({
             _id: data.siteId,
-            user: data.reqUser._id
+            owner: data.reqUser._id
         })
         .exec(function (err, site) {
             if (err) {

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" ng-app="appModule" ng-controller="appController">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <!-- AngularJS -->
+    <script src="./angular-core/angular.min.js"></script>
+    <script src="./angular-core/angular-ui-router.min.js"></script>
+    <script src="./angular-core/angular-jwt.min.js"></script>
+    <script src="./angular-core/angular-storage.min.js"></script>
+
+    <script src="./angular-app/app.js"></script>
+    <script src="./angular-app/services/storage.service.js"></script>
+    <script src="./angular-app/services/config.service.js"></script>
+    <script src="./angular-app/auth/login.module.js"></script>
+    <script src="./angular-app/auth/register.module.js"></script>
+    <script src="./angular-app/chat/chat.module.js"></script>
+
+    <!-- 3rd-party -->
+    <script src="./assets/js/jquery.js"></script>
+    <script src="./assets/js/tether.js"></script>
+    <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./assets/js/socket.io.js"></script>
+</head>
+<body>
+
+<nav class="text-center">
+    <a href="#!/login">login</a>
+    <a href="#!/register">register</a>
+    <a href="#!/chat">chat</a>
+</nav>
+
+<div style="width: 300px; height: 300px; border: 1px solid #ccc; margin: 0 auto; padding: 1px;">
+    <div ui-view></div>
+</div>
+
+</body>
+</html>

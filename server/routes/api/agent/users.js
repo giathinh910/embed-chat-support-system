@@ -6,12 +6,12 @@ var UserModel = require('../../../model/user');
 
 router
     .get('/search', middleware.isTokenValid, function (req, res, next) {
-        var searchParams = req.query;
-        searchParams.reqUser = req.user;
-        if (searchParams.term === '')
+        var data = req.query;
+        data.reqUser = req.user;
+        if (data.term === '')
             res.send([]);
         else
-            UserModel.searchAgents(searchParams, function (err, r) {
+            UserModel.searchAgents(data, function (err, r) {
                 if (err)
                     res.send({
                         error: err
@@ -20,10 +20,12 @@ router
                     res.send(r);
             });
     })
-    .post('/', middleware.isTokenValid, function (req, res, next) {
-        var newSite = req.body;
-        newSite.user = req.user._id;
-        UserModel.addOne(newSite, function (err, r) {
+    .get('/site/:siteId', middleware.isTokenValid, function (req, res, next) {
+        var data = {
+            reqUser: req.user,
+            siteId: req.params.siteId
+        };
+        UserModel.getCustomerListBySiteId(data, function (err, r) {
             if (err)
                 res.send({
                     error: err

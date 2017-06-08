@@ -134,10 +134,10 @@ User.createCustomer = function (inputUser, callback) {
                     if (!site)
                         return callback('SiteNotExisted', null);
                     else
-                        callback(null, null);
+                        callback(null, site);
                 });
         },
-        function (foo, callback) { // check if customer existed in that site
+        function (site, callback) { // check if customer existed in that site
             User
                 .findOne({
                     email: inputUser.email,
@@ -226,6 +226,32 @@ User.searchAgents = function (params, callback) {
         .select('_id email displayName')
         .exec(function (err, users) {
             callback(err, users);
+        });
+};
+
+User.getCustomerListBySiteId = function (params, callback) {
+    var data = extend({
+        reqUser: null,
+        page: 1,
+        perPage: 10,
+        siteId: null
+    }, params);
+
+    console.log('SITE ID', data.siteId);
+
+    // var skip = (data.page - 1) * data.perPage; // page 1 will have skip = 0
+
+    User
+        .find({
+            site: data.siteId
+        })
+        // .skip(skip)
+        // .limit(parseInt(data.perPage))
+        .sort({
+            _id: -1
+        })
+        .exec(function (err, sites) {
+            callback(err, sites);
         });
 };
 

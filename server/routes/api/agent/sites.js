@@ -90,7 +90,7 @@ router
     })
     .post('/', middleware.isTokenValid, function (req, res, next) {
         var newSite = req.body;
-        newSite.user = req.user._id;
+        newSite.owner = req.user._id;
         SiteModel.addOne(newSite, function (err, r) {
             if (err)
                 res.send({

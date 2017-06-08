@@ -54,8 +54,8 @@ module.exports = function (io) {
     });
 
     // Bind customer connection
-    io.of('/ws/customer-chat').on('connect', function (socket) {
-        console.log('an user connected', socket.id);
+    io.of('/ws/chat/customer').on('connect', function (socket) {
+        console.log('a customer connected', socket.id);
 
         /*=== HANDLE USER GOING ONLINE ======================================================*/
         // get user info from token
@@ -77,7 +77,7 @@ module.exports = function (io) {
                 user: decodedUser
             });
             // broadcast user online
-            socket.broadcast.emit('an user comes online', decodedUser);
+            socket.broadcast.emit('a customer comes online', decodedUser);
         } else { // case user has already online, just push socket id
             onlineCustomers[decodedUser.site][onlineUserIndex].sockets.push(socket.id);
         }
@@ -86,13 +86,16 @@ module.exports = function (io) {
         /*=====================================================================================*/
 
 
+        socket.join(decodedUser.room._id);
+
         socket.on('user says', function (message) {
             console.log('user says', message);
         });
 
+
         /*=== HANDLE USER GOING OFFLINE ======================================================*/
         socket.on('disconnect', function () {
-            console.log('an user disconnected', socket.id);
+            console.log('a customer disconnected', socket.id);
 
             // find the online user by socket.id
             var onlineUserIndex = _.findIndex(onlineCustomers[decodedUser.site], function (onlineUser) {
@@ -108,7 +111,7 @@ module.exports = function (io) {
 
             // if sum of socket id of that user equals 0, then remove that user (come offline)
             if (onlineCustomers[decodedUser.site][onlineUserIndex].sockets.length === 0) {
-                socket.broadcast.emit('an user comes offline', onlineCustomers[decodedUser.site][onlineUserIndex].user);
+                socket.broadcast.emit('a customer comes offline', onlineCustomers[decodedUser.site][onlineUserIndex].user);
                 onlineCustomers[decodedUser.site].splice(onlineUserIndex, 1);
             }
 
@@ -118,7 +121,7 @@ module.exports = function (io) {
     });
 
     // Bind agent connection
-    io.of('/ws/agent-chat').on('connect', function (socket) {
+    io.of('/ws/chat/agent').on('connect', function (socket) {
         console.log('an agent connected', socket.id);
 
         /*=== HANDLE USER GOING ONLINE ======================================================*/
@@ -137,7 +140,7 @@ module.exports = function (io) {
                 user: decodedUser
             });
             // broadcast user online
-            socket.broadcast.emit('an user comes online', decodedUser);
+            socket.broadcast.emit('an agent comes online', decodedUser);
         }
         // case user has already online, just push socket id
         else {
@@ -148,9 +151,22 @@ module.exports = function (io) {
         /*=====================================================================================*/
 
 
+        var siteId = socket.request._query['siteId'];
+
+        socket.on('request init data for agent', function() {
+            socket.emit('respond init data for agent', {
+                onlineCustomers: onlineCustomers[siteId]
+            });
+        });
+
+        socket.emit('init data for agent', {
+            onlineCustomers: onlineCustomers[siteId]
+        });
+
         socket.on('agent says', function (message) {
             console.log('agent says', message);
         });
+
 
         /*=== HANDLE USER GOING OFFLINE ======================================================*/
         socket.on('disconnect', function () {
@@ -170,7 +186,7 @@ module.exports = function (io) {
 
             // if sum of socket id of that user equals 0, then remove that user (come offline)
             if (onlineAgents[onlineAgentIndex].sockets.length === 0) {
-                socket.broadcast.emit('an user comes offline', onlineAgents[onlineAgentIndex].user);
+                socket.broadcast.emit('an agent comes offline', onlineAgents[onlineAgentIndex].user);
                 onlineAgents.splice(onlineAgentIndex, 1);
             }
 

@@ -29,4 +29,17 @@ Room.createOne = function (data, callback) {
     });
 };
 
+Room.getOneByCustomerId = function (customerId, callback) {
+    Room
+        .findOne({
+            users: {
+                $in: [customerId]
+            }
+        })
+        .select('_id displayName')
+        .exec(function (err, r) {
+            callback(err, r);
+        })
+};
+
 module.exports = Room;

@@ -1,0 +1,15 @@
+<div class="tb-chat-frame">
+    <div class="entry-messages">
+        <div ng-repeat="message in activeMessages">
+            <strong>{{message.createdBy.displayName}}: </strong> {{message.content}}
+        </div>
+    </div>
+    <form>
+        <div class="input-group">
+            <input formControlName="content" type="text" class="form-control" placeholder="Nhập tin nhắn ...">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i></button>
+            </span>
+        </div>
+    </form>
+</div>

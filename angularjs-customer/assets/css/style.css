@@ -1,0 +1,15 @@
+.tb-chat-frame .entry-messages {
+    background: #f2f2f2;
+    height: 15.3rem;
+    overflow-y: scroll;
+    border-radius: .25rem;
+    padding: .5rem;
+}
+
+.tb-chat-frame .entry-messages > div {
+    margin-bottom: .3rem;
+}
+
+.tb-chat-frame form {
+    padding: .5rem;
+}

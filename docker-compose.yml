@@ -34,14 +34,14 @@ services:
       - "3001:4200"
     networks:
       - isolated-network
-  client:
+  angularjs-customer:
     build:
-      context: ./client
+      context: ./angularjs-customer
       dockerfile: Dockerfile
     volumes:
-      - ./client:/usr/src/app
+      - ./angularjs-customer:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "3002:4200"
+      - "3002:8080"
     networks:
       - isolated-network

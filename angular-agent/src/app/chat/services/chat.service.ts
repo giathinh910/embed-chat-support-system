@@ -13,7 +13,7 @@ export class ChatService {
     private socket;
 
     constructor(private storageService: StorageService) {
-        this.ioHandler();
+        //
     }
 
     private messages = new Subject<any>();
@@ -22,22 +22,37 @@ export class ChatService {
     private socketStatus = new Subject<boolean>();
     socketStatus$ = this.socketStatus.asObservable();
 
+    private onlineCustomers = new Subject<any>();
+    onlineCustomers$ = this.onlineCustomers.asObservable();
+
     // Service message commands
     sendMessage(message) {
         this.socket.emit('agent says', message);
         this.messages.next(message);
     }
 
-    ioHandler() {
+    ioHandler(siteId) {
+        if (!siteId)
+            return;
         this.socket = io(this.chatSocketUrl, {
             query: {
-                token: this.storageService.getToken()
+                token: this.storageService.getToken(),
+                siteId: siteId
             }
         });
 
         this.socket.on('connect', () => this.socketStatus.next(true));
 
         this.socket.on('disconnect', () => this.socketStatus.next(false));
+
+        this.socket.on('respond init data for agent', (data) => this.onlineCustomers.next(data));
+    }
+
+    emit(event, data?) {
+        if (data)
+            this.socket.emit(event, data);
+        else
+            this.socket.emit(event);
     }
 
 }
