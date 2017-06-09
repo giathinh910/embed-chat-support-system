@@ -2,7 +2,9 @@ app.service('AppStorage', function() {
     var keyNames = {
         token: 'token',
         userEmail: 'userEmail',
-        userDisplayName: 'userDisplayName'
+        userDisplayName: 'userDisplayName',
+        userSite: 'userSite',
+        userRoom: 'userRoom'
     };
 
     this.setToken = function(token) {
@@ -29,10 +31,28 @@ app.service('AppStorage', function() {
         return localStorage.getItem(keyNames.userDisplayName);
     };
 
+    this.setSite = function(site) {
+        localStorage.setItem(keyNames.userSite, site);
+    };
+
+    this.getSite = function() {
+        return localStorage.getItem(keyNames.userSite);
+    };
+
+    this.setRoom = function(room) {
+        localStorage.setItem(keyNames.userRoom, room);
+    };
+
+    this.getRoom = function() {
+        return localStorage.getItem(keyNames.userRoom);
+    };
+
     this.setOnLogin = function(user) {
         this.setToken(user.token);
         this.setUserEmail(user.email);
         this.setDisplayName(user.displayName);
+        this.setSite(user.site);
+        this.setRoom(user.room);
     };
 
     this.reset = function() {

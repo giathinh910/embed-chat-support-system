@@ -10,7 +10,10 @@
     <div class="row">
         <div class="col-12 col-md-4">
             <div *ngIf="customers" class="list-group">
-                <a *ngFor="let customer of customers" href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a *ngFor="let customer of customers; let customerIndex = index"
+                   [ngClass]="{'active': customer.current}"
+                   (click)="switchCustomer(customerIndex); $event.preventDefault()"
+                   href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between mb-1">
                         <h6 class="font-weight-bold mb-0">{{customer.displayName}}</h6>
                         <span *ngIf="customer.online" class="badge badge-success badge-pill">online</span>
@@ -24,7 +27,7 @@
         <div class="col-12 col-md-8">
             <div class="tb-chat-frame">
                 <div #messagesDiv class="entry-messages">
-                    <div *ngFor="let message of messages; let last = last" class="entry-message clearfix">
+                    <div *ngFor="let message of currentMessages; let last = last" class="entry-message clearfix">
                         <span class="entry-author">{{message.createdBy.displayName}}</span>
                         <div class="entry-content">{{message.content}}</div>
                         <ng-container *ngIf="last">{{scrollMessagesToBottom(last)}}</ng-container>

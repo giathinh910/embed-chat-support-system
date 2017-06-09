@@ -78,13 +78,15 @@ router
                     email: user.email,
                     displayName: user.displayName,
                     site: user.site,
-                    room: room
+                    room: room._id
                 }, config.jwt.secret);
                 res.send({
                     'token': token,
                     id: user._id,
                     email: user.email,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    site: user.site,
+                    room: room._id
                 });
             }
         ], function (err, result) {

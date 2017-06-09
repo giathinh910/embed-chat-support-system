@@ -1,14 +1,16 @@
 <div class="tb-chat-frame">
     <div class="entry-messages">
-        <div ng-repeat="message in activeMessages">
+        <div ng-repeat="message in messages">
             <strong>{{message.createdBy.displayName}}: </strong> {{message.content}}
         </div>
     </div>
-    <form>
+    <form name="form" ng-submit="sendMessage()">
         <div class="input-group">
-            <input formControlName="content" type="text" class="form-control" placeholder="Nhập tin nhắn ...">
+            <input ng-model="chatForm.content"
+                   name="content"
+                   type="text" class="form-control" placeholder="Type message your here ..." required>
             <span class="input-group-btn">
-                <button class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i></button>
+                <button ng-disabled="!form.$valid" class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i></button>
             </span>
         </div>
     </form>

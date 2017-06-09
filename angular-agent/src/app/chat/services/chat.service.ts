@@ -22,8 +22,8 @@ export class ChatService {
     private socketStatus = new Subject<boolean>();
     socketStatus$ = this.socketStatus.asObservable();
 
-    private onlineCustomers = new Subject<any>();
-    onlineCustomers$ = this.onlineCustomers.asObservable();
+    private initData = new Subject<any>();
+    initData$ = this.initData.asObservable();
 
     private aCustomerComesOnline = new Subject<any>();
     aCustomerComesOnline$ = this.aCustomerComesOnline.asObservable();
@@ -34,7 +34,6 @@ export class ChatService {
     // Service message commands
     sendMessage(message) {
         this.socket.emit('agent says', message);
-        this.messages.next(message);
     }
 
     listenIoEvents(siteId) {
@@ -48,15 +47,25 @@ export class ChatService {
             }
         });
 
-        this.socket.on('connect', () => this.socketStatus.next(true));
+        let socket = this.socket;
 
-        this.socket.on('disconnect', () => this.socketStatus.next(false));
+        socket.on('connect', () => this.socketStatus.next(true));
 
-        this.socket.on('respond init data for agent', (data) => this.onlineCustomers.next(data));
+        socket.on('disconnect', () => this.socketStatus.next(false));
 
-        this.socket.on('a customer comes online', (data) => this.aCustomerComesOnline.next(data));
+        socket.on('respond init data for agent', (data) => this.initData.next(data));
 
-        this.socket.on('a customer comes offline', (data) => this.aCustomerComesOffline.next(data));
+        socket.on('a customer comes online', (data) => {
+            socket.emit('a customer comes online', data);
+            this.aCustomerComesOnline.next(data);
+        });
+
+        socket.on('a customer comes offline', (data) => {
+            socket.emit('a customer comes offline', data);
+            this.aCustomerComesOffline.next(data);
+        });
+
+        socket.on('customer says', (data) => this.messages.next(data));
     }
 
     emitRequestInitData() {

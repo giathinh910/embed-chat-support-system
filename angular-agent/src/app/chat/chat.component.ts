@@ -25,17 +25,25 @@ export class ChatComponent implements OnInit {
         }
     };
     submitted: boolean = false;
-    messages: any[];
     @ViewChild('messagesDiv') private messagesDivER: ElementRef;
     socketStatus: boolean = false;
     customers: any[];
+    currentCustomer: any;
+    currentMessages = [
+        // {
+        //     createdBy: {
+        //         displayName: ''
+        //     },
+        //     content: ''
+        // }
+    ];
 
-    constructor(private chatService: ChatService,
-                private siteService: SiteService,
-                private customerService: CustomerService,
-                private formBuilder: FormBuilder,
+    constructor(private formBuilder: FormBuilder,
                 private storageService: StorageService,
-                private activatedRoute: ActivatedRoute) {
+                private activatedRoute: ActivatedRoute,
+                private customerService: CustomerService,
+                private chatService: ChatService,
+                private siteService: SiteService) {
     }
 
     ngOnInit() {
@@ -49,33 +57,16 @@ export class ChatComponent implements OnInit {
             });
             this.customerService.getCustomersBySiteId(siteId).then(customers => {
                 for (let customer of customers) {
+                    customer.current = false;
                     customer.online = false;
+                    customer.messages = []
                 }
                 this.customers = customers;
+                if (this.customers.length)
+                    this.switchCustomer(0);
                 this.chatService.emitRequestInitData();
             })
         });
-
-        this.messages = [
-            {
-                createdBy: {
-                    displayName: 'Agent 1'
-                },
-                content: 'Hi customer, how can I help you?'
-            },
-            {
-                createdBy: {
-                    displayName: 'Thinh Bui'
-                },
-                content: 'Hi cloz'
-            },
-            {
-                createdBy: {
-                    displayName: 'Agent 1'
-                },
-                content: 'Ba, fuck off'
-            }
-        ];
 
         // Build form
         this.chatForm = this.formBuilder.group({
@@ -105,6 +96,16 @@ export class ChatComponent implements OnInit {
         }
     }
 
+    switchCustomer(customerIndex: number) {
+        for (let i in this.customers) {
+            this.customers[i].current = false;
+        }
+        this.customers[customerIndex].current = true;
+        this.currentCustomer = this.customers[customerIndex];
+        this.currentMessages = this.customers[customerIndex].messages;
+        console.log(this.customers);
+    }
+
     scrollMessagesToBottom(isLast: boolean) {
         if (isLast) {
             let messagesDiv: HTMLElement = this.messagesDivER.nativeElement;
@@ -120,36 +121,57 @@ export class ChatComponent implements OnInit {
         message.createdBy = {
             _id: this.storageService.getUserId(),
             email: this.storageService.getUserEmail(),
-            displayName: this.storageService.getUserDisplayName()
+            displayName: this.storageService.getUserDisplayName(),
         };
-        this.messages.push(message);
+        // this.currentMessages.push(message);
+        let data = {
+            message: message,
+            room: this.currentCustomer.room
+        };
+
+        console.log(this.currentCustomer);
+
         this.submitted = true;
-        this.chatService.sendMessage(message);
+        this.chatService.sendMessage(data);
         this.chatForm.reset();
     }
 
     listenIoSubjects() {
+        let thisChatComponent = this;
+
         this.chatService.socketStatus$.subscribe(socketStatus => {
             this.socketStatus = socketStatus
         });
 
+        // when message comes
         this.chatService.messages$.subscribe(message => {
-            this.submitted = false;
+            console.log(message);
+            let customerIndex = _.findIndex(thisChatComponent.customers, function (customer) {
+                return customer._id === message.createdBy._id;
+            });
+
+            thisChatComponent.customers[customerIndex].messages.push(message);
+
+            // if the incoming message is from current customer, then push to current message
+            // if(thisChatComponent.customers[customerIndex].current) {
+            //     thisChatComponent.currentMessages.push(message);
+            // }
         });
 
-        // fetch online customers on init
-        this.chatService.onlineCustomers$.subscribe(data => {
+        // when initial data comes
+        this.chatService.initData$.subscribe(data => {
             let onlineCustomers = data.onlineCustomers;
             for (let onlineCustomerIndex in onlineCustomers) {
                 let customerIndex = _.findIndex(this.customers, function (customer) {
                     return customer._id === onlineCustomers[onlineCustomerIndex].user._id;
                 });
+
                 if (customerIndex > -1)
                     this.customers[customerIndex].online = true;
             }
         });
 
-        // fetch a customer comes online
+        // when a customer come online
         this.chatService.aCustomerComesOnline$.subscribe(customerComesOnline => {
             let customerIndex = _.findIndex(this.customers, function (customer) {
                 return customer._id === customerComesOnline._id;
@@ -158,7 +180,7 @@ export class ChatComponent implements OnInit {
                 this.customers[customerIndex].online = true;
         });
 
-        // fetch a customer comes offline
+        // when a customer come offline
         this.chatService.aCustomerComesOffline$.subscribe(customerComesOffline => {
             let customerIndex = _.findIndex(this.customers, function (customer) {
                 return customer._id === customerComesOffline._id;

@@ -15,7 +15,18 @@ angular
             })
     })
     .controller('chatController', function ($scope, AppStorage) {
-        $scope.pageTitle = 'Live Chat';
+        $scope.chatForm = {
+            content: ''
+        };
+
+        $scope.messages = [
+            // {
+            //     content: '',
+            //     createdBy: {
+            //         displayName: ''
+            //     }
+            // }
+        ];
 
         // $state.params.domain
 
@@ -25,22 +36,18 @@ angular
             }
         });
 
-        $scope.activeMessages = [
-            {
-                content: 'Hello, I\'m agent 1. How can I help you?',
-                room: {},
+        $scope.sendMessage = function () {
+            var message = {
+                content: $scope.chatForm.content,
                 createdBy: {
-                    displayName: 'Agent 1'
-                },
-                created_at: ''
-            },
-            {
-                content: 'I wanna ask ... uhm',
-                room: {},
-                createdBy: {
-                    displayName: 'Customer 1'
-                },
-                created_at: ''
-            }
-        ];
+                    displayName: AppStorage.getDisplayName(),
+                    site: AppStorage.getSite(),
+                    room: AppStorage.getRoom()
+                }
+            };
+            socket.emit('customer says', message);
+            $scope.messages.push(message);
+            console.log(message);
+            $scope.chatForm.content = '';
+        };
     });

@@ -70,18 +70,20 @@ var handleCustomerConnection = function (socket) {
     // get customer info from token
     var decoded = jwt.decode(socket.request._query['token'], {complete: true}),
         decodedUser = decoded.payload,
-        siteId = decodedUser.site;
+        siteId = decodedUser.site,
+        roomId = decodedUser.room;
 
+    /*=== WHEN INIT CONNECTION ===*/
     // Join to site
     socket.join(siteId);
-    console.log('customer joined', siteId, 'site');
-
+    // Join chat room
+    socket.join(roomId);
     // init a domain container
     if (!onlineCustomers[decodedUser.site]) {
         onlineCustomers[decodedUser.site] = [];
     }
 
-    /*=== HANDLE USER GOING ONLINE ======================================================*/
+    // decide if we should emit "a customer comes online"
     var onlineUserIndex = _.findIndex(onlineCustomers[decodedUser.site], function (onlineUser) {
         return String(onlineUser.user._id) === decodedUser._id;
     });
@@ -101,15 +103,19 @@ var handleCustomerConnection = function (socket) {
     }
 
     console.log('customers', util.inspect(onlineCustomers, {showHidden: false, depth: null}));
-    /*=====================================================================================*/
 
 
-    socket.on('user says', function (message) {
-        console.log('user says', message);
+    /*== WHEN THIS CUSTOMER SAYS ==*/
+    socket.on('customer says', function (data) {
+        console.log('customer says', data);
+        socket.to(roomId).emit('customer says', {
+            content: data.content,
+            createdBy: decodedUser
+        })
     });
 
 
-    /*=== HANDLE USER GOING OFFLINE ======================================================*/
+    /*=== WHEN THIS CUSTOMER GOES OFFLINE ===*/
     socket.on('disconnect', function () {
         console.log('a customer disconnected', socket.id);
 
@@ -133,7 +139,6 @@ var handleCustomerConnection = function (socket) {
 
         console.log('customers', util.inspect(onlineCustomers, {showHidden: false, depth: null}));
     });
-    /*=====================================================================================*/
 };
 
 var handleAgentConnection = function (socket) {
@@ -144,15 +149,26 @@ var handleAgentConnection = function (socket) {
         decodedUser = decoded.payload,
         siteId = socket.request._query['siteId'];
 
+    /*=== WHEN INIT CONNECTION ===*/
     // Join to site
     socket.join(siteId);
-    console.log('agent joined', siteId, 'site');
+    // Join all customers room
+    if (onlineCustomers[siteId]) {
+        onlineCustomers[siteId].forEach(function (customer) {
+            socket.join(customer.user.room);
+        });
+    }
+    socket.on('request init data for agent', function () {
 
-    /*=== HANDLE USER GOING ONLINE ======================================================*/
+        socket.emit('respond init data for agent', {
+            onlineCustomers: onlineCustomers[siteId]
+        });
+    });
+
+    // decide if we should emit "an agent comes online"
     var onlineAgentIndex = _.findIndex(onlineAgents, function (onlineAgent) {
         return String(onlineAgent.user._id) === decodedUser._id;
     });
-
     // case agent hasn't existed yet
     if (onlineAgentIndex === -1) {
         onlineAgents.push({
@@ -166,23 +182,25 @@ var handleAgentConnection = function (socket) {
     else {
         onlineAgents[onlineAgentIndex].sockets.push(socket.id);
     }
-
     console.log('agents', util.inspect(onlineAgents, {showHidden: false, depth: null}));
-    /*=====================================================================================*/
 
 
-    socket.on('request init data for agent', function () {
-        socket.emit('respond init data for agent', {
-            onlineCustomers: onlineCustomers[siteId]
-        });
-    });
-
+    /*=== WHEN THIS AGENT SAYS ===*/
     socket.on('agent says', function (message) {
         console.log('agent says', message);
+        // socket.to(roomId).emit('agent says', {
+        //     content: data.content,
+        //     createdBy: decodedUser
+        // })
+    });
+
+    /*=== WHEN A CUSTOMER GOES ONLINE ===*/
+    socket.on('a customer comes online', function (customer) {
+        socket.join(customer.room);
     });
 
 
-    /*=== HANDLE USER GOING OFFLINE ======================================================*/
+    /*=== WHEN THIS AGENT GOES OFFLINE ===*/
     socket.on('disconnect', function () {
         console.log('an agent disconnected', socket.id);
 
@@ -206,5 +224,4 @@ var handleAgentConnection = function (socket) {
 
         console.log('agents', util.inspect(onlineAgents, {showHidden: false, depth: null}));
     });
-    /*=====================================================================================*/
 };
