@@ -39,11 +39,9 @@ var app = angular
             }
         });
     })
-    .controller('appController', function ($http) {
-        // $http({
-        //     method: 'GET',
-        //     url: '//localhost:3000/api/customer/auth/me'
-        // }).then(function (res) {
-        //     console.log(res.data);
-        // });
+    .controller('appController', function ($scope, AppStorage, $state) {
+        $scope.logout = function() {
+            AppStorage.reset();
+            $state.go('login');
+        }
     });

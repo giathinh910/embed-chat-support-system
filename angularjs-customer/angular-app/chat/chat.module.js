@@ -19,7 +19,7 @@ angular
 
         // $state.params.domain
 
-        var socket = io('http://localhost:3000/ws/chat/customer', {
+        var socket = io('http://localhost:3000/ws/chat', {
             query: {
                 token: AppStorage.getToken()
             }
