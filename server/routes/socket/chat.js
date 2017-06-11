@@ -4,8 +4,6 @@ var config = require('../../config');
 var _ = require('lodash');
 var util = require('util');
 
-var SiteModel = require('../../model/site');
-
 var onlineCustomers = {
     // 'domain-id': [
     //     {
@@ -159,7 +157,6 @@ var handleAgentConnection = function (socket) {
         });
     }
     socket.on('request init data for agent', function () {
-
         socket.emit('respond init data for agent', {
             onlineCustomers: onlineCustomers[siteId]
         });
@@ -188,10 +185,10 @@ var handleAgentConnection = function (socket) {
     /*=== WHEN THIS AGENT SAYS ===*/
     socket.on('agent says', function (message) {
         console.log('agent says', message);
-        // socket.to(roomId).emit('agent says', {
-        //     content: data.content,
-        //     createdBy: decodedUser
-        // })
+        socket.to(message.room).emit('agent says', {
+            content: message.content,
+            createdBy: decodedUser
+        })
     });
 
     /*=== WHEN A CUSTOMER GOES ONLINE ===*/

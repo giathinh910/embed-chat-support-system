@@ -53,10 +53,13 @@ app.use('/sites', require('./routes/site'));
 app.use('/chat', require('./routes/chat'));
 app.use('/api', require('./routes/api/cors'));
 
+// API agent
 app.use('/api/agent/auth', require('./routes/api/agent/auth'));
 app.use('/api/agent/sites', require('./routes/api/agent/sites'));
 app.use('/api/agent/users', require('./routes/api/agent/users'));
+app.use('/api/agent/rooms', require('./routes/api/agent/rooms'));
 
+// API customer
 app.use('/api/customer/auth', require('./routes/api/customer/auth'));
 app.use('/api/customer/chat', require('./routes/api/customer/chat'));
 

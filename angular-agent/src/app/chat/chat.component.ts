@@ -3,15 +3,15 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ChatService } from "./services/chat.service";
 import { StorageService } from "../global/services/storage.service";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+import { RoomService } from '../room/services/room.service';
 import { SiteService } from '../site/services/site.service';
-import { CustomerService } from '../customer/services/customer.service';
 import * as _ from "lodash";
 
 @Component({
     selector: 'agent-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
-    providers: [SiteService, CustomerService]
+    providers: [SiteService, RoomService]
 })
 export class ChatComponent implements OnInit {
     site: any;
@@ -27,9 +27,9 @@ export class ChatComponent implements OnInit {
     submitted: boolean = false;
     @ViewChild('messagesDiv') private messagesDivER: ElementRef;
     socketStatus: boolean = false;
-    customers: any[];
-    currentCustomer: any;
-    currentMessages = [
+    rooms: any[];
+    currentRoom: any;
+    currentMessages: any = [
         // {
         //     createdBy: {
         //         displayName: ''
@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit {
     constructor(private formBuilder: FormBuilder,
                 private storageService: StorageService,
                 private activatedRoute: ActivatedRoute,
-                private customerService: CustomerService,
+                private roomService: RoomService,
                 private chatService: ChatService,
                 private siteService: SiteService) {
     }
@@ -55,15 +55,16 @@ export class ChatComponent implements OnInit {
             this.siteService.getOne(siteId).then(site => {
                 this.site = site;
             });
-            this.customerService.getCustomersBySiteId(siteId).then(customers => {
-                for (let customer of customers) {
-                    customer.current = false;
-                    customer.online = false;
-                    customer.messages = []
+            this.roomService.getRoomsBySiteId(siteId).then(rooms => {
+                for (let room of rooms) {
+                    room.current = false;
+                    room.online = false;
+                    room.messages = []
                 }
-                this.customers = customers;
-                if (this.customers.length)
-                    this.switchCustomer(0);
+                this.rooms = rooms;
+                // switch to first room by default
+                if (this.rooms.length)
+                    this.switchRoom(0);
                 this.chatService.emitRequestInitData();
             })
         });
@@ -96,14 +97,13 @@ export class ChatComponent implements OnInit {
         }
     }
 
-    switchCustomer(customerIndex: number) {
-        for (let i in this.customers) {
-            this.customers[i].current = false;
+    switchRoom(roomIndex: number) {
+        for (let i in this.rooms) {
+            this.rooms[i].current = false;
         }
-        this.customers[customerIndex].current = true;
-        this.currentCustomer = this.customers[customerIndex];
-        this.currentMessages = this.customers[customerIndex].messages;
-        console.log(this.customers);
+        this.rooms[roomIndex].current = true;
+        this.currentRoom = this.rooms[roomIndex];
+        this.currentMessages = this.rooms[roomIndex].messages;
     }
 
     scrollMessagesToBottom(isLast: boolean) {
@@ -123,70 +123,62 @@ export class ChatComponent implements OnInit {
             email: this.storageService.getUserEmail(),
             displayName: this.storageService.getUserDisplayName(),
         };
-        // this.currentMessages.push(message);
-        let data = {
-            message: message,
-            room: this.currentCustomer.room
-        };
-
-        console.log(this.currentCustomer);
+        message.room = this.currentRoom._id;
+        this.currentMessages.push(message);
 
         this.submitted = true;
-        this.chatService.sendMessage(data);
+        this.chatService.sendMessage(message);
+        this.submitted = false;
         this.chatForm.reset();
     }
 
     listenIoSubjects() {
         let thisChatComponent = this;
 
+        // when connect / disconnect
         this.chatService.socketStatus$.subscribe(socketStatus => {
             this.socketStatus = socketStatus
-        });
-
-        // when message comes
-        this.chatService.messages$.subscribe(message => {
-            console.log(message);
-            let customerIndex = _.findIndex(thisChatComponent.customers, function (customer) {
-                return customer._id === message.createdBy._id;
-            });
-
-            thisChatComponent.customers[customerIndex].messages.push(message);
-
-            // if the incoming message is from current customer, then push to current message
-            // if(thisChatComponent.customers[customerIndex].current) {
-            //     thisChatComponent.currentMessages.push(message);
-            // }
         });
 
         // when initial data comes
         this.chatService.initData$.subscribe(data => {
             let onlineCustomers = data.onlineCustomers;
             for (let onlineCustomerIndex in onlineCustomers) {
-                let customerIndex = _.findIndex(this.customers, function (customer) {
-                    return customer._id === onlineCustomers[onlineCustomerIndex].user._id;
+                let roomIndex = _.findIndex(this.rooms, function (room) {
+                    return room._id === onlineCustomers[onlineCustomerIndex].user.room;
                 });
 
-                if (customerIndex > -1)
-                    this.customers[customerIndex].online = true;
+                if (roomIndex > -1)
+                    this.rooms[roomIndex].online = true;
             }
+        });
+
+        // when message comes
+        this.chatService.messages$.subscribe(message => {
+            console.log(message);
+            let roomIndex = _.findIndex(thisChatComponent.rooms, function (room) {
+                return room._id === message.createdBy.room;
+            });
+
+            thisChatComponent.rooms[roomIndex].messages.push(message);
         });
 
         // when a customer come online
         this.chatService.aCustomerComesOnline$.subscribe(customerComesOnline => {
-            let customerIndex = _.findIndex(this.customers, function (customer) {
-                return customer._id === customerComesOnline._id;
+            let roomIndex = _.findIndex(this.rooms, function (room) {
+                return room._id === customerComesOnline.room;
             });
-            if (customerIndex > -1)
-                this.customers[customerIndex].online = true;
+            if (roomIndex > -1)
+                this.rooms[roomIndex].online = true;
         });
 
         // when a customer come offline
         this.chatService.aCustomerComesOffline$.subscribe(customerComesOffline => {
-            let customerIndex = _.findIndex(this.customers, function (customer) {
-                return customer._id === customerComesOffline._id;
+            let roomIndex = _.findIndex(this.rooms, function (room) {
+                return room._id === customerComesOffline.room;
             });
-            if (customerIndex > -1)
-                this.customers[customerIndex].online = false;
+            if (roomIndex > -1)
+                this.rooms[roomIndex].online = false;
         })
     }
 }

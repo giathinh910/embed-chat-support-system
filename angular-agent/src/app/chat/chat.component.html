@@ -9,14 +9,15 @@
 
     <div class="row">
         <div class="col-12 col-md-4">
-            <div *ngIf="customers" class="list-group">
-                <a *ngFor="let customer of customers; let customerIndex = index"
-                   [ngClass]="{'active': customer.current}"
-                   (click)="switchCustomer(customerIndex); $event.preventDefault()"
+            <h3>Rooms</h3>
+            <div *ngIf="rooms" class="list-group">
+                <a *ngFor="let room of rooms; let roomIndex = index"
+                   [ngClass]="{'active': room.current}"
+                   (click)="switchRoom(roomIndex); $event.preventDefault()"
                    href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between mb-1">
-                        <h6 class="font-weight-bold mb-0">{{customer.displayName}}</h6>
-                        <span *ngIf="customer.online" class="badge badge-success badge-pill">online</span>
+                        <h6 class="font-weight-normal mb-0">{{room.displayName}}</h6>
+                        <span *ngIf="room.online" class="badge badge-success badge-pill">online</span>
                     </div>
                     <!--<p class="mb-1">Hello, I'm client</p>-->
                     <!--<small>3 days ago</small>-->

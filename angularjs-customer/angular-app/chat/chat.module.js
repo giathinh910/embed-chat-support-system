@@ -36,6 +36,12 @@ angular
             }
         });
 
+        socket.on('agent says', function(message) {
+            $scope.$apply(function() {
+                $scope.messages.push(message);
+            })
+        });
+
         $scope.sendMessage = function () {
             var message = {
                 content: $scope.chatForm.content,
