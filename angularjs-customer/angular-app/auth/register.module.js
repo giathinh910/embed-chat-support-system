@@ -19,11 +19,10 @@ angular
             email: 'customer1@email.com',
             displayName: 'Customer 1',
             password: '121212',
-            site: '5939217ece8ba60020dfafd7'
+            site: AppConfig.site
         };
 
         $scope.register = function () {
-            console.log($scope.registerForm);
             $http({
                 method: 'POST',
                 url: AppConfig.apiUrl + '/auth/register',

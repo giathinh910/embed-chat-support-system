@@ -67,6 +67,7 @@ Site.getList = function (params, callback) {
         .sort({
             _id: -1
         })
+        .populate('owner')
         .exec(function (err, sites) {
             callback(err, sites);
         });

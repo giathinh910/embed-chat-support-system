@@ -1,15 +1,35 @@
-<div class="container mt-4">
-    <h2 *ngIf="site" class="app-page-title mb-4 d-sm-flex justify-content-sm-between">
-        {{site.displayName}} - {{site.domain}}
-        <span [ngClass]="{'badge-success': socketStatus, 'badge-danger': !socketStatus}" class="badge badge-pill">
-            <span *ngIf="socketStatus">connected</span>
-            <span *ngIf="!socketStatus">disconnected</span>
+<div *ngIf="site" class="jumbotron jumbotron-fluid pt-4 pb-4">
+    <div class="container">
+        <h2 class="display-4" style="font-size: 2rem">{{site.displayName}} - {{site.domain}}</h2>
+        <span [ngClass]="{'text-success': socketStatus, 'text-danger': !socketStatus}" class="font-weight-bold">
+            <span *ngIf="socketStatus">CONNECTED</span>
+            <span *ngIf="!socketStatus">DISCONNECTED</span>
         </span>
-    </h2>
+        <!--<p class="lead"></p>-->
+        <!--<hr class="my-4">-->
+        <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+        <!--<p class="lead">-->
+        <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+        <!--</p>-->
+    </div>
+</div>
+
+<div class="container mt-4">
+
+    <!--<h2 *ngIf="site" class="app-page-title mb-4 d-sm-flex justify-content-sm-between">-->
+        <!--{{site.displayName}} - {{site.domain}}-->
+        <!--<span [ngClass]="{'badge-success': socketStatus, 'badge-danger': !socketStatus}" class="badge badge-pill">-->
+            <!--<span *ngIf="socketStatus">connected</span>-->
+            <!--<span *ngIf="!socketStatus">disconnected</span>-->
+        <!--</span>-->
+    <!--</h2>-->
 
     <div class="row">
         <div class="col-12 col-md-4">
-            <h3>Rooms</h3>
+            <p class="font-weight-bold">ONLINE CUSTOMERS</p>
+            <div *ngIf="rooms && rooms.length == 0" class="alert alert-info">
+                No one is online
+            </div>
             <div *ngIf="rooms" class="list-group">
                 <a *ngFor="let room of rooms; let roomIndex = index"
                    [ngClass]="{'active': room.current}"
@@ -17,7 +37,7 @@
                    href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between mb-1">
                         <h6 class="font-weight-normal mb-0">{{room.displayName}}</h6>
-                        <span *ngIf="room.online" class="badge badge-success badge-pill">online</span>
+                        <span *ngIf="room.online" class="badge badge-success badge-pill">ONLINE</span>
                     </div>
                     <!--<p class="mb-1">Hello, I'm client</p>-->
                     <!--<small>3 days ago</small>-->

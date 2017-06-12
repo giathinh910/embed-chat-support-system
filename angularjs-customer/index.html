@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en" ng-app="appModule" ng-controller="appController">
 <head>
+    <base href="/">
+
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -18,8 +20,9 @@
     <script src="./angular-core/angular-storage.min.js"></script>
 
     <script src="./angular-app/app.js"></script>
-    <script src="./angular-app/services/storage.service.js"></script>
-    <script src="./angular-app/services/config.service.js"></script>
+    <script src="./angular-app/providers/helper.service.js"></script>
+    <script src="./angular-app/providers/storage.service.js"></script>
+    <script src="./angular-app/providers/config.service.js"></script>
     <script src="./angular-app/auth/login.module.js"></script>
     <script src="./angular-app/auth/register.module.js"></script>
     <script src="./angular-app/chat/chat.module.js"></script>
@@ -33,10 +36,10 @@
 <body>
 
 <nav class="text-center">
-    <a href="#!/login">login</a>
-    <a href="#!/register">register</a>
-    <a href="#!/chat">chat</a>
-    <a ng-click="logout()" href="#logout">sign out</a>
+    <a ui-sref="login">login</a>
+    <a ui-sref="register">register</a>
+    <a ui-sref="chat">chat</a>
+    <a ng-click="logout(); $event.preventDefault()" href="#logout">sign out</a>
 </nav>
 
 <div style="width: 300px; height: 300px; border: 1px solid #ccc; margin: 0 auto; padding: 1px;">

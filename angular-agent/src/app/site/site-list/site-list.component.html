@@ -1,32 +1,56 @@
-<div class="card">
-    <div class="card-header d-sm-flex justify-content-sm-between">
-        <span>Your Sites</span>
-        <a routerLink="/sites/create" class="btn btn-success btn-sm">Add Site</a>
+<div class="jumbotron jumbotron-fluid pt-4 pb-4">
+    <div class="container">
+        <div class="d-sm-flex justify-content-sm-between">
+            <h2 class="display-4" style="font-size: 2rem">Your Sites</h2>
+            <a routerLink="/sites/create">ADD NEW SITE</a>
+        </div>
+        <p class="lead">All the sites which were created by yourself</p>
+        <!--<hr class="my-4">-->
+        <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+        <!--<p class="lead">-->
+        <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+        <!--</p>-->
     </div>
-    <div class="card-block">
-        <table class="table">
-            <thead class="thead-default">
-            <tr>
-                <th>ID</th>
-                <th>Domain</th>
-                <th>Display Name</th>
-                <th class="text-center" style="width: 10rem;">Actions</th>
-            </tr>
-            </thead>
-            <tbody *ngIf="sites">
-            <tr *ngFor="let site of sites">
-                <th scope="row">{{site._id}}</th>
-                <td>{{site.domain}}</td>
-                <td>{{site.displayName}}</td>
-                <td class="text-center">
-                    <div class="btn-group btn-group-sm" role="group">
-                        <a routerLink="/sites/{{site._id}}" class="btn btn-info">Detail</a>
-                        <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
-                        <button class="btn btn-danger">Delete</button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+</div>
+
+<div *ngIf="sites" class="container">
+    <div *ngIf="!sites.length" class="alert alert-info text-center pb-3">
+        <p>You have no site.</p>
+        <a routerLink="/sites/create" class="btn btn-primary btn-sm">Add Your First Site</a>
     </div>
+
+    <table *ngIf="sites.length" class="table table-bordered">
+        <thead class="thead-default">
+        <tr>
+            <th style="width: 230px">ID</th>
+            <th>Domain</th>
+            <th>Display Name</th>
+            <th class="text-center" style="width: 10rem;">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let site of sites">
+            <th scope="row">{{site._id}}</th>
+            <td>{{site.domain}}</td>
+            <td>{{site.displayName}}</td>
+            <td class="text-center">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a routerLink="/sites/{{site._id}}" class="btn btn-info">Detail</a>
+                    <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
+                    <button class="btn btn-danger">Delete</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--<div class="card">-->
+        <!--<div class="card-header d-sm-flex justify-content-sm-between">-->
+            <!--<span>Your Sites</span>-->
+            <!--<a routerLink="/sites/create" class="btn btn-success btn-sm">Add Site</a>-->
+        <!--</div>-->
+        <!--<div class="card-block">-->
+        <!--</div>-->
+    <!--</div>-->
+
 </div>

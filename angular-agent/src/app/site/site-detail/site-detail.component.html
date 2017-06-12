@@ -1,35 +1,56 @@
-<div *ngIf="site" class="card">
-    <div class="card-header d-sm-flex justify-content-sm-between">
-        <span>{{site.displayName}} - {{site.domain}}</span>
-        <span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>
+<div *ngIf="site" class="jumbotron jumbotron-fluid pt-4 pb-4">
+    <div class="container">
+        <div class="d-sm-flex justify-content-sm-between">
+            <h2 class="display-4" style="font-size: 2rem">{{site.displayName}} - {{site.domain}}</h2>
+            <span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>
+            <!--<a routerLink="/sites/create">ADD NEW SITE</a>-->
+        </div>
+        <p *ngIf="isOwner(site)" class="lead">Manage other agents which can chat with customers from this site.</p>
+        <!--<hr class="my-4">-->
+        <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+        <!--<p class="lead">-->
+        <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+        <!--</p>-->
     </div>
-    <div class="card-block">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8">
-                <h4 class="card-title">Agents in this site</h4>
-                <agent-agent-search *ngIf="isOwner(site)" (onAgentSelected)="assignAgent($event)"></agent-agent-search>
-                <table class="table mt-3">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Email</th>
-                        <th>Display Name</th>
-                        <th *ngIf="isOwner(site)" class="text-center" style="width: 5rem">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let agent of site.agents; let agentIndex = index">
-                        <th scope="row">{{agentIndex + 1}}</th>
-                        <td>{{agent.email}}</td>
-                        <td>{{agent.displayName}}</td>
-                        <td *ngIf="isOwner(site)" class="text-center"><a (click)="unassignAgent(agent); $event.preventDefault()" href="#" class="btn btn-danger btn-sm">Unassign</a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-                <h4 class="card-title">Embed code</h4>
-                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum exercitationem possimus reiciendis tempora voluptates! Aspernatur at distinctio error hic laboriosam nihil obcaecati, quasi reiciendis reprehenderit sequi sint suscipit voluptate. Hic!</div>
+</div>
+
+<div class="container">
+    <div *ngIf="site" class="card">
+        <!--<div class="card-header d-sm-flex justify-content-sm-between">-->
+            <!--<span>{{site.displayName}} - {{site.domain}}</span>-->
+            <!--<span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>-->
+        <!--</div>-->
+        <div class="card-block">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8">
+                    <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Agents in this site</h3>
+                    <agent-agent-search *ngIf="isOwner(site)" (onAgentSelected)="assignAgent($event)">
+                    </agent-agent-search>
+                    <table *ngIf="site.agents.length" class="table mt-3">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Display Name</th>
+                            <th *ngIf="isOwner(site)" class="text-center" style="width: 5rem">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let agent of site.agents; let agentIndex = index">
+                            <th scope="row">{{agentIndex + 1}}</th>
+                            <td>{{agent.email}}</td>
+                            <td>{{agent.displayName}}</td>
+                            <td *ngIf="isOwner(site)" class="text-center"><a
+                                    (click)="unassignAgent(agent); $event.preventDefault()" href="#"
+                                    class="btn btn-danger btn-sm">Unassign</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Embed code</h3>
+                    <code>{{chatClientUrl}}/?site=593e05e0decf5e00201e0c99</code>
+                </div>
             </div>
         </div>
     </div>

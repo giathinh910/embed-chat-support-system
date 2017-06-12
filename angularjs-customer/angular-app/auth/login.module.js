@@ -18,7 +18,7 @@ angular
         $scope.loginForm = {
             email: 'customer1@email.com',
             password: '121212',
-            site: '5939217ece8ba60020dfafd7'
+            site: AppConfig.site
         };
 
         $scope.login = function () {

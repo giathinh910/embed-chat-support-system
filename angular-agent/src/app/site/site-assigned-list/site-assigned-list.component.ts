@@ -37,5 +37,9 @@ export class SiteAssignedListComponent implements OnInit {
         })
     }
 
+    isOwner(site) {
+        return site.owner._id == this.storageService.getUserId();
+    }
+
 }
 

@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var async = require('async');
-var bcryptConfig = require('../config').bcrypt;
 var bcrypt = require('bcrypt');
 var extend = require('extend');
 var config = require('../config');
@@ -68,7 +67,7 @@ User.createAgent = function (inputUser, callback) {
                 });
         },
         function (foo, callback) {
-            bcrypt.hash(inputUser.password, bcryptConfig.saltRounds, function (err, hash) {
+            bcrypt.hash(inputUser.password, config.bcrypt.saltRounds, function (err, hash) {
                 if (err)
                     callback(err, null);
                 inputUser.password = hash;
@@ -154,7 +153,7 @@ User.createCustomer = function (inputUser, callback) {
                 });
         },
         function (foo, callback) { // hashed password
-            bcrypt.hash(inputUser.password, bcryptConfig.saltRounds, function (err, hash) {
+            bcrypt.hash(inputUser.password, config.bcrypt.saltRounds, function (err, hash) {
                 if (err)
                     callback(err, null);
                 inputUser.password = hash;

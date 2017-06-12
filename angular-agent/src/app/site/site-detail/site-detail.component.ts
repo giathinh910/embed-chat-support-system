@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SiteService } from '../services/site.service';
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from "../../global/services/storage.service";
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'agent-site-detail',
@@ -10,6 +11,7 @@ import { StorageService } from "../../global/services/storage.service";
 })
 export class SiteDetailComponent implements OnInit {
     site: any;
+    chatClientUrl = environment.chatClientUrl;
 
     constructor(private siteService: SiteService,
                 private activatedRoute: ActivatedRoute,
@@ -41,7 +43,9 @@ export class SiteDetailComponent implements OnInit {
     }
 
     isOwner(site) {
-        return site.owner._id == this.storageService.getUserId();
+        if (site.owner)
+            return site.owner._id == this.storageService.getUserId();
+        return false;
     }
 
 }

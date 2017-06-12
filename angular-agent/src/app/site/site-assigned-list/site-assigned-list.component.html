@@ -1,32 +1,57 @@
-<div class="card">
-    <div class="card-header d-sm-flex justify-content-sm-between">
-        <span>Sites assigned to you</span>
-    </div>
-    <div class="card-block">
-        <table class="table">
-            <thead class="thead-default">
-            <tr>
-                <th>ID</th>
-                <th>Domain</th>
-                <th>Display Name</th>
-                <th class="text-center" style="width: 10rem;">Actions</th>
-            </tr>
-            </thead>
-            <tbody *ngIf="sites">
-            <tr *ngFor="let site of sites; let siteIndex = index">
-                <th scope="row">{{site._id}}</th>
-                <td>{{site.domain}}</td>
-                <td>{{site.displayName}}</td>
-                <td class="text-center">
-                    <div class="btn-group btn-group-sm" role="group">
-                        <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
-                        <button [disabled]="storageService.getUserId() === site.owner"
-                           (click)="leaveSite(site._id, siteIndex)"
-                           href="#" class="btn btn-danger">Leave Site</button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<div class="jumbotron jumbotron-fluid pt-4 pb-4">
+    <div class="container">
+        <h2 class="display-4" style="font-size: 2rem">Assigned Site</h2>
+        <p class="lead">Sites from which you can chat with customers, including yours and those which assigned to you (by other agents).</p>
+        <!--<hr class="my-4">-->
+        <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+        <!--<p class="lead">-->
+        <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+        <!--</p>-->
     </div>
 </div>
+
+<div class="container">
+    <table class="table table-bordered">
+        <thead class="thead-default">
+        <tr>
+            <th style="width: 230px">ID</th>
+            <th class="text-center" style="width: 100px;">Owner</th>
+            <th>Domain</th>
+            <th>Display Name</th>
+            <th class="text-center" style="width: 10rem;">Actions</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="sites">
+        <tr *ngFor="let site of sites; let siteIndex = index">
+            <th scope="row">{{site._id}}</th>
+            <td class="text-center">
+                <span *ngIf="isOwner(site)" class="text-success">
+                    <i class="fa fa-check-circle text-success"></i> You
+                </span>
+                <span *ngIf="!isOwner(site)">
+                    {{site.owner.displayName}}
+                    <div>({{site.owner.email}})</div>
+                </span>
+            </td>
+            <td>{{site.domain}}</td>
+            <td>{{site.displayName}}</td>
+            <td class="text-center">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
+                    <button *ngIf="isOwner(site)"
+                            (click)="leaveSite(site._id, siteIndex)"
+                            href="#" class="btn btn-danger">Leave Site</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--<div class="card">-->
+    <!--<div class="card-header d-sm-flex justify-content-sm-between">-->
+        <!--<span>Sites assigned to you</span>-->
+    <!--</div>-->
+    <!--<div class="card-block">-->
+    <!--</div>-->
+<!--</div>-->

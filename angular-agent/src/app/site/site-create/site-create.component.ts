@@ -69,7 +69,7 @@ export class SiteCreateComponent implements OnInit {
         this.siteService.createOne(this.siteCreateForm.value).then(res => {
             this.submitted = false;
             if (!res.error) {
-                this.router.navigateByUrl('/sites');
+                this.router.navigate(['sites', res._id]);
             } else
                 console.log(res.error);
         });
