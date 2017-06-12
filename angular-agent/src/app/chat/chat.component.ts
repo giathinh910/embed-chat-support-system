@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit {
     currentRoom: any;
     currentMessages: any = [
         // {
-        //     createdBy: {
+        //     user: {
         //         displayName: ''
         //     },
         //     content: ''
@@ -118,7 +118,7 @@ export class ChatComponent implements OnInit {
             return;
         }
         let message = this.chatForm.value;
-        message.createdBy = {
+        message.user = {
             _id: this.storageService.getUserId(),
             email: this.storageService.getUserEmail(),
             displayName: this.storageService.getUserDisplayName(),
@@ -157,7 +157,7 @@ export class ChatComponent implements OnInit {
         this.chatService.messages$.subscribe(message => {
             console.log(message);
             let roomIndex = _.findIndex(thisChatComponent.rooms, function (room) {
-                return room._id === message.createdBy.room;
+                return room._id === message.user.room;
             });
 
             thisChatComponent.rooms[roomIndex].messages.push(message);

@@ -4,6 +4,8 @@ var config = require('../../config');
 var _ = require('lodash');
 var util = require('util');
 
+var MessageModel = require('../../model/message');
+
 var onlineCustomers = {
     // 'domain-id': [
     //     {
@@ -106,9 +108,22 @@ var handleCustomerConnection = function (socket) {
     /*== WHEN THIS CUSTOMER SAYS ==*/
     socket.on('customer says', function (data) {
         console.log('customer says', data);
-        socket.to(roomId).emit('customer says', {
+        var message = {
             content: data.content,
-            createdBy: decodedUser
+            site: siteId,
+            room: roomId,
+            user: decodedUser
+        };
+        socket.to(roomId).emit('customer says', message);
+        message.user = decodedUser._id;
+        MessageModel.createOne(message, function (err, r) {
+            if (err)
+                socket.emit('message failed to save', {
+                    content: data.content,
+                    user: decodedUser
+                });
+            else
+                socket.emit('message saved', r);
         })
     });
 
@@ -187,7 +202,7 @@ var handleAgentConnection = function (socket) {
         console.log('agent says', message);
         socket.to(message.room).emit('agent says', {
             content: message.content,
-            createdBy: decodedUser
+            user: decodedUser
         })
     });
 

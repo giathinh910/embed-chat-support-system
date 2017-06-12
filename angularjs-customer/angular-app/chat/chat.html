@@ -1,7 +1,7 @@
 <div class="tb-chat-frame">
     <div class="entry-messages">
         <div ng-repeat="message in messages">
-            <strong>{{message.createdBy.displayName}}: </strong> {{message.content}}
+            <strong>{{message.user.displayName}}: </strong> {{message.content}}
         </div>
     </div>
     <form name="form" ng-submit="sendMessage()">

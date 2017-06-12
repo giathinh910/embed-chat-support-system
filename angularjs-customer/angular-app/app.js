@@ -14,14 +14,14 @@ var app = angular
                 // redirectTo: '/chat'
             });
     })
-    .run(function ($state, $transitions, jwtHelper, AppStorage, Helper, $window, AppConfig) {
+    .run(function ($state, $transitions, jwtHelper, AppStorage, Helper, $window, AppConfig, $http) {
+        $http.defaults.headers.common.Authorization = 'Bearer ' + AppStorage.getToken();
+
         // get site id from query params
         var query = Helper.queryParser($window.location.search);
         if (AppConfig.site) {
             $state.go('chat');
-            console.log('site added to memory');
         } else {
-            console.log('no site in memory');
             if (query.site) {
                 AppConfig.setSite(query.site);
                 $state.go('chat');

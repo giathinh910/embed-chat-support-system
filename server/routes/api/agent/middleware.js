@@ -6,12 +6,11 @@ module.exports = {
         var bearerToken = req.headers.authorization;
         if (bearerToken) {
             var user = jwt.verify(bearerToken.replace('Bearer ', ''), config.jwt.secret);
-            if (user && (user.level <= config.userLevel.agent)) { // agent & admin are allowed
+            if (user && user.level <= config.userLevel.agent) { // agent & admin are allowed
                 req.user = user;
                 next();
-            } else {
+            } else
                 res.sendStatus(401);
-            }
         }
         else
             res.sendStatus(401);

@@ -61,7 +61,7 @@ app.use('/api/agent/rooms', require('./routes/api/agent/rooms'));
 
 // API customer
 app.use('/api/customer/auth', require('./routes/api/customer/auth'));
-app.use('/api/customer/chat', require('./routes/api/customer/chat'));
+app.use('/api/customer/messages', require('./routes/api/customer/messages'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

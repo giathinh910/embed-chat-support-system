@@ -8,13 +8,6 @@ var UserModel = require('../../../model/user');
 var RoomModel = require('../../../model/room');
 
 router
-    .get('/me', function (req, res, next) {
-        if (req.cookies.token) {
-            var decoded = jwt.decode(req.cookies.token);
-            res.send(decoded);
-        } else
-            res.sendStatus(401);
-    })
     .post('/register', function (req, res, next) {
         async.waterfall([
             function (callback) {
@@ -76,6 +69,7 @@ router
                     _id: user._id,
                     email: user.email,
                     displayName: user.displayName,
+                    level: user.level,
                     site: user.site,
                     room: room._id
                 }, config.jwt.secret);
@@ -84,6 +78,7 @@ router
                     _id: user._id,
                     email: user.email,
                     displayName: user.displayName,
+                    level: user.level,
                     site: user.site,
                     room: room._id
                 });

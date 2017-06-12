@@ -14,7 +14,7 @@ angular
                 }
             })
     })
-    .controller('chatController', function ($scope, AppStorage) {
+    .controller('chatController', function ($scope, $http, AppStorage, AppConfig) {
         $scope.chatForm = {
             content: ''
         };
@@ -22,13 +22,31 @@ angular
         $scope.messages = [
             // {
             //     content: '',
-            //     createdBy: {
+            //     user: {
             //         displayName: ''
             //     }
             // }
         ];
 
-        // $state.params.domain
+        $http({
+            method: 'GET',
+            url: AppConfig.apiUrl + '/messages',
+            params: {
+                site: AppConfig.site,
+                room: AppStorage.getRoom()
+            }
+        }).then(
+            function (res) {
+                if (res.data.error)
+                    alert(res.data.error);
+                else {
+                    $scope.messages = res.data;
+                }
+            },
+            function errorCallback(res) {
+                console.log(res);
+            }
+        );
 
         var socket = io('http://localhost:3000/ws/chat', {
             query: {
@@ -36,16 +54,23 @@ angular
             }
         });
 
-        socket.on('agent says', function(message) {
-            $scope.$apply(function() {
+        socket.on('agent says', function (message) {
+            $scope.$apply(function () {
                 $scope.messages.push(message);
             })
+        });
+
+        socket.on('message saved', function (message) {
+            console.log(message);
+            // $scope.$apply(function() {
+            //     $scope.messages.push(message);
+            // })
         });
 
         $scope.sendMessage = function () {
             var message = {
                 content: $scope.chatForm.content,
-                createdBy: {
+                user: {
                     displayName: AppStorage.getDisplayName(),
                     site: AppStorage.getSite(),
                     room: AppStorage.getRoom()

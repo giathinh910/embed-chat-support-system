@@ -4,6 +4,7 @@ app.service('AppStorage', function() {
         userId: 'userId',
         userEmail: 'userEmail',
         userDisplayName: 'userDisplayName',
+        userLevel: 'userLevel',
         userSite: 'userSite',
         userRoom: 'userRoom'
     };
@@ -40,6 +41,14 @@ app.service('AppStorage', function() {
         return localStorage.getItem(keyNames.userDisplayName);
     };
 
+    this.setLevel = function(level) {
+        localStorage.setItem(keyNames.userLevel, level);
+    };
+
+    this.getLevel = function() {
+        return localStorage.getItem(keyNames.userLevel);
+    };
+
     this.setSite = function(site) {
         localStorage.setItem(keyNames.userSite, site);
     };
@@ -61,6 +70,7 @@ app.service('AppStorage', function() {
         this.setUserEmail(user._id);
         this.setUserEmail(user.email);
         this.setDisplayName(user.displayName);
+        this.setLevel(user.level);
         this.setSite(user.site);
         this.setRoom(user.room);
     };

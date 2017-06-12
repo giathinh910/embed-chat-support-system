@@ -16,7 +16,7 @@ var messageSchema = new Schema(
             ref: 'Room',
             required: true
         },
-        createdBy: {
+        user: {
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
@@ -29,6 +29,24 @@ var messageSchema = new Schema(
 
 var Message = mongoose.model('Message', messageSchema);
 
-//
+Message.createOne = function (data, callback) {
+    Message.create(data, function (err, r) {
+        callback(err, r);
+    });
+};
+
+Message.getMessageForCustomer = function (params, callback) {
+    Message
+        .find({
+            site: params.site,
+            room: params.room,
+            user: params.user
+        })
+        .populate('site room user')
+        .exec(function (err, r) {
+            r = r ? r : [];
+            callback(err, r);
+        });
+};
 
 module.exports = Message;
