@@ -1,6 +1,7 @@
 app.service('AppStorage', function() {
     var keyNames = {
         token: 'token',
+        userId: 'userId',
         userEmail: 'userEmail',
         userDisplayName: 'userDisplayName',
         userSite: 'userSite',
@@ -13,6 +14,14 @@ app.service('AppStorage', function() {
 
     this.getToken = function() {
         return localStorage.getItem(keyNames.token);
+    };
+
+    this.setUserId = function(id) {
+        localStorage.setItem(keyNames.userId, id);
+    };
+
+    this.getUserId = function() {
+        return localStorage.getItem(keyNames.userId);
     };
 
     this.setUserEmail = function(email) {
@@ -49,6 +58,7 @@ app.service('AppStorage', function() {
 
     this.setOnLogin = function(user) {
         this.setToken(user.token);
+        this.setUserEmail(user._id);
         this.setUserEmail(user.email);
         this.setDisplayName(user.displayName);
         this.setSite(user.site);

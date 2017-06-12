@@ -1,10 +1,16 @@
 <div *ngIf="site" class="jumbotron jumbotron-fluid pt-4 pb-4">
-    <div class="container">
-        <h2 class="display-4" style="font-size: 2rem">{{site.displayName}} - {{site.domain}}</h2>
-        <span [ngClass]="{'text-success': socketStatus, 'text-danger': !socketStatus}" class="font-weight-bold">
-            <span *ngIf="socketStatus">CONNECTED</span>
-            <span *ngIf="!socketStatus">DISCONNECTED</span>
-        </span>
+    <div class="container d-sm-flex justify-content-sm-between">
+        <div>
+            <h2 class="display-4" style="font-size: 2rem">{{site.displayName}} - {{site.domain}}</h2>
+                <span [ngClass]="{'text-success': socketStatus, 'text-danger': !socketStatus}" class="font-weight-bold">
+                <span *ngIf="socketStatus">CONNECTED</span>
+                <span *ngIf="!socketStatus">DISCONNECTED</span>
+            </span>
+        </div>
+        <ul class="tb-actions-list-inline">
+            <li><a routerLink="/sites/{{site._id}}"><i class="fa fa-gear"></i> Configure this site</a></li>
+            <li><a routerLink="/sites/create"><i class="fa fa-plus"></i> Add new site</a></li>
+        </ul>
         <!--<p class="lead"></p>-->
         <!--<hr class="my-4">-->
         <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
@@ -17,16 +23,16 @@
 <div class="container mt-4">
 
     <!--<h2 *ngIf="site" class="app-page-title mb-4 d-sm-flex justify-content-sm-between">-->
-        <!--{{site.displayName}} - {{site.domain}}-->
-        <!--<span [ngClass]="{'badge-success': socketStatus, 'badge-danger': !socketStatus}" class="badge badge-pill">-->
-            <!--<span *ngIf="socketStatus">connected</span>-->
-            <!--<span *ngIf="!socketStatus">disconnected</span>-->
-        <!--</span>-->
+    <!--{{site.displayName}} - {{site.domain}}-->
+    <!--<span [ngClass]="{'badge-success': socketStatus, 'badge-danger': !socketStatus}" class="badge badge-pill">-->
+    <!--<span *ngIf="socketStatus">connected</span>-->
+    <!--<span *ngIf="!socketStatus">disconnected</span>-->
+    <!--</span>-->
     <!--</h2>-->
 
     <div class="row">
         <div class="col-12 col-md-4">
-            <p class="font-weight-bold">ONLINE CUSTOMERS</p>
+            <p class="font-weight-bold">REGISTED CUSTOMERS</p>
             <div *ngIf="rooms && rooms.length == 0" class="alert alert-info">
                 No one is online
             </div>
@@ -55,9 +61,11 @@
                     </div>
                 </div>
                 <form [formGroup]="chatForm" (submit)="onSubmit()" class="input-group">
-                    <input formControlName="content" type="text" class="form-control" placeholder="Type and press enter to send ...">
+                    <input formControlName="content" type="text" class="form-control"
+                           placeholder="Type and press enter to send ...">
                     <span class="input-group-btn">
-                        <button [disabled]="!chatForm.valid || submitted" class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i> SEND</button>
+                        <button [disabled]="!chatForm.valid || submitted" class="btn btn-primary" type="button"><i
+                                class="fa fa-paper-plane"></i> SEND</button>
                     </span>
                 </form>
             </div>

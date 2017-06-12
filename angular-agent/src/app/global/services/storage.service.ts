@@ -59,7 +59,7 @@ export class StorageService {
         if (user.token) {
             this.setToken(user.token);
         }
-        this.setUserId(user.id);
+        this.setUserId(user._id);
         this.setUserEmail(user.email);
         this.setUserDisplayName(user.displayName);
     }

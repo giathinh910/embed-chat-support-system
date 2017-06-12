@@ -5,9 +5,10 @@ var Schema = mongoose.Schema;
 
 var messageSchema = new Schema(
     {
-        createdBy: {
+        content: String,
+        site: {
             type: Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'Site',
             required: true
         },
         room: {
@@ -15,7 +16,11 @@ var messageSchema = new Schema(
             ref: 'Room',
             required: true
         },
-        content: String
+        createdBy: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        }
     },
     {
         timestamps: true

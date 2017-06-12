@@ -11,3 +11,30 @@ body {
 .app-page-title {
   font-size: 1.5rem;
 }
+
+.tb-actions-list-inline {
+  margin: 0;
+  padding: 0;
+  li {
+    list-style: none;
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 1px;
+      height: 20px;
+      background: rgba($blue, .3);
+      right: -8px;
+      top: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+      &::after {
+        display: none;
+      }
+    }
+  }
+}

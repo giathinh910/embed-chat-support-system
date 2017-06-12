@@ -85,7 +85,6 @@ export class RegisterComponent implements OnInit {
         this.authService.register(this.registerForm.value).then(res => {
             this.submitted = false;
             if (!res.error) {
-                this.storageService.setUser(res);
                 this.router.navigateByUrl('/login');
             } else {
                 console.log(res.error);

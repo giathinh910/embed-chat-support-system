@@ -72,7 +72,6 @@ router
                 })
             },
             function (user, room, callback) {
-                req.session.user = user;
                 var token = jwt.sign({
                     _id: user._id,
                     email: user.email,
@@ -82,7 +81,7 @@ router
                 }, config.jwt.secret);
                 res.send({
                     'token': token,
-                    id: user._id,
+                    _id: user._id,
                     email: user.email,
                     displayName: user.displayName,
                     site: user.site,

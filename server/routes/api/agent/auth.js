@@ -29,7 +29,6 @@ router
     .post('/login', function (req, res, next) {
         UserModel.authenticateAgent(req.body, function (err, user) {
             if (user) {
-                req.session.user = user;
                 var token = jwt.sign({
                     _id: user._id,
                     email: user.email,
@@ -38,7 +37,7 @@ router
                 }, config.jwt.secret);
                 res.send({
                     'token': token,
-                    id: user._id,
+                    _id: user._id,
                     email: user.email,
                     displayName: user.displayName,
                     level: user.level

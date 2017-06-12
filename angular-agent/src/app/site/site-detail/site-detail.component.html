@@ -1,11 +1,14 @@
 <div *ngIf="site" class="jumbotron jumbotron-fluid pt-4 pb-4">
-    <div class="container">
-        <div class="d-sm-flex justify-content-sm-between">
+    <div class="container d-sm-flex justify-content-sm-between">
+        <div>
             <h2 class="display-4" style="font-size: 2rem">{{site.displayName}} - {{site.domain}}</h2>
-            <span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>
+            <p *ngIf="isOwner(site)" class="lead">Manage other agents which can chat with customers from this site.</p>
+            <p *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></p>
             <!--<a routerLink="/sites/create">ADD NEW SITE</a>-->
         </div>
-        <p *ngIf="isOwner(site)" class="lead">Manage other agents which can chat with customers from this site.</p>
+        <ul class="tb-actions-list-inline">
+            <li><a routerLink="/chat/{{site._id}}"><i class="fa fa-comments"></i> Start chatting</a></li>
+        </ul>
         <!--<hr class="my-4">-->
         <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
         <!--<p class="lead">-->
