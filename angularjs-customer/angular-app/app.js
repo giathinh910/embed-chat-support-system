@@ -6,17 +6,16 @@ var app = angular
         'registerModule',
         'chatModule'
     ])
-    .config(function ($stateProvider) {
+    .config(function ($stateProvider, $httpProvider) {
         $stateProvider
             .state('home', {
                 url: '/',
                 templateUrl: './angular-app/app.html'
                 // redirectTo: '/chat'
             });
+        $httpProvider.interceptors.push('HttpInterceptor');
     })
-    .run(function ($state, $transitions, jwtHelper, AppStorage, Helper, $window, AppConfig, $http) {
-        $http.defaults.headers.common.Authorization = 'Bearer ' + AppStorage.getToken();
-
+    .run(function ($state, $transitions, jwtHelper, AppStorage, Helper, $window, AppConfig) {
         // get site id from query params
         var query = Helper.queryParser($window.location.search);
         if (AppConfig.site) {

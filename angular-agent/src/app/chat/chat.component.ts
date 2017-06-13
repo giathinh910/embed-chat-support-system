@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ChatService } from "./services/chat.service";
 import { StorageService } from "../global/services/storage.service";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { RoomService } from '../room/services/room.service';
 import { SiteService } from '../site/services/site.service';
 import * as _ from "lodash";
 
@@ -11,7 +10,7 @@ import * as _ from "lodash";
     selector: 'agent-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
-    providers: [SiteService, RoomService]
+    providers: [SiteService]
 })
 export class ChatComponent implements OnInit {
     site: any;
@@ -41,7 +40,6 @@ export class ChatComponent implements OnInit {
     constructor(private formBuilder: FormBuilder,
                 private storageService: StorageService,
                 private activatedRoute: ActivatedRoute,
-                private roomService: RoomService,
                 private chatService: ChatService,
                 private siteService: SiteService) {
     }
@@ -55,7 +53,7 @@ export class ChatComponent implements OnInit {
             this.siteService.getOne(siteId).then(site => {
                 this.site = site;
             });
-            this.roomService.getRoomsBySiteId(siteId).then(rooms => {
+            this.chatService.getRoomsBySite(siteId).then(rooms => {
                 for (let room of rooms) {
                     room.current = false;
                     room.online = false;
@@ -104,6 +102,10 @@ export class ChatComponent implements OnInit {
         this.rooms[roomIndex].current = true;
         this.currentRoom = this.rooms[roomIndex];
         this.currentMessages = this.rooms[roomIndex].messages;
+
+        this.chatService.getMessagesByRoom(this.rooms[roomIndex]._id).then(
+            messages => this.currentMessages = messages
+        );
     }
 
     scrollMessagesToBottom(isLast: boolean) {
@@ -155,12 +157,16 @@ export class ChatComponent implements OnInit {
 
         // when message comes
         this.chatService.messages$.subscribe(message => {
-            console.log(message);
             let roomIndex = _.findIndex(thisChatComponent.rooms, function (room) {
                 return room._id === message.user.room;
             });
 
-            thisChatComponent.rooms[roomIndex].messages.push(message);
+            // push message to its own room
+            this.rooms[roomIndex].messages.push(message);
+
+            // also push message to screen if it was sent by the customer
+            if (message.user._id !== this.storageService.getUserId())
+                this.currentMessages.push(message);
         });
 
         // when a customer come online

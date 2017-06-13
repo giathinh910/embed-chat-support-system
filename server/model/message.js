@@ -35,12 +35,10 @@ Message.createOne = function (data, callback) {
     });
 };
 
-Message.getMessageForCustomer = function (params, callback) {
+Message.getManyByRoom = function (params, callback) {
     Message
         .find({
-            site: params.site,
-            room: params.room,
-            user: params.user
+            room: params.room
         })
         .populate('site room user')
         .exec(function (err, r) {

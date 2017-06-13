@@ -5,13 +5,12 @@ var middleware = require('./middleware');
 var MessageModel = require('../../../model/message');
 
 router
-    .get('/', middleware.isTokenValid, function (req, res, next) {
+    .get('/room/:roomId', middleware.isTokenValid, function (req, res, next) {
         var reqParams = {
-            site: req.query.site,
-            room: req.query.room,
+            room: req.params.roomId,
             user: req.user._id
         };
-        MessageModel.getMessageForCustomer(reqParams, function (err, messages) {
+        MessageModel.getManyByRoom(reqParams, function (err, messages) {
             if (err)
                 res.send(err);
             else

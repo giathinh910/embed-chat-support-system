@@ -3,18 +3,17 @@ import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 import { Subject } from "rxjs/Subject";
 import { StorageService } from "../../global/services/storage.service";
+import { AuthHttp } from 'angular2-jwt';
 
 declare let io: any;
 
 @Injectable()
 export class ChatService {
 
+    private apiUrl = environment.apiUrl;
+
     private chatSocketUrl = environment.chatSocketUrl;
     private socket;
-
-    constructor(private storageService: StorageService) {
-        //
-    }
 
     private messages = new Subject<any>();
     messages$ = this.messages.asObservable();
@@ -31,6 +30,36 @@ export class ChatService {
     private aCustomerComesOffline = new Subject<any>();
     aCustomerComesOffline$ = this.aCustomerComesOffline.asObservable();
 
+    constructor(private storageService: StorageService,
+                private http: AuthHttp) {
+        //
+    }
+
+    /* XHR
+     ============================================================= */
+    getRoomsBySite(siteId: string): Promise<any> {
+        return this.http
+            .get(`${this.apiUrl}/rooms/site/${siteId}`)
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handleError)
+    }
+
+    getMessagesByRoom(roomId: string): Promise<any> {
+        return this.http
+            .get(`${this.apiUrl}/messages/room/${roomId}`)
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handleError)
+    }
+
+    private handleError(error: any): Promise<any> {
+        console.log('An error occurred:', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
+
+    /* SOCKET
+     ============================================================= */
     // Service message commands
     sendMessage(message) {
         this.socket.emit('agent says', message);

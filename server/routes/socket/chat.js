@@ -198,11 +198,23 @@ var handleAgentConnection = function (socket) {
 
 
     /*=== WHEN THIS AGENT SAYS ===*/
-    socket.on('agent says', function (message) {
-        console.log('agent says', message);
-        socket.to(message.room).emit('agent says', {
-            content: message.content,
+    socket.on('agent says', function (data) {
+        console.log('agent says', data);
+        var message = {
+            content: data.content,
+            site: siteId,
+            room: data.room,
             user: decodedUser
+        };
+        socket.to(data.room).emit('agent says', message);
+        MessageModel.createOne(message, function (err, r) {
+            if (err)
+                socket.emit('message failed to save', {
+                    content: data.content,
+                    user: decodedUser
+                });
+            else
+                socket.emit('message saved', r);
         })
     });
 

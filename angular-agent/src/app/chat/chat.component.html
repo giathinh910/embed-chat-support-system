@@ -54,8 +54,10 @@
         <div class="col-12 col-md-8">
             <div class="tb-chat-frame">
                 <div #messagesDiv class="entry-messages">
-                    <div *ngFor="let message of currentMessages; let last = last" class="entry-message clearfix">
-                        <span class="entry-author">{{message.user.displayName}}</span>
+                    <div *ngFor="let message of currentMessages; let last = last"
+                         [ngClass]="{'is-me': message.user._id === this.storageService.getUserId()}"
+                         class="entry-message clearfix">
+                        <!--<span class="entry-author">{{message.user.displayName}}</span>-->
                         <div class="entry-content">{{message.content}}</div>
                         <ng-container *ngIf="last">{{scrollMessagesToBottom(last)}}</ng-container>
                     </div>

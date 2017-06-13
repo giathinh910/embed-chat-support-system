@@ -30,11 +30,9 @@ angular
 
         $http({
             method: 'GET',
-            url: AppConfig.apiUrl + '/messages',
-            params: {
-                site: AppConfig.site,
-                room: AppStorage.getRoom()
-            }
+            url: AppConfig.apiUrl + '/messages/room/' + AppStorage.getRoom()
+            // params: {
+            // }
         }).then(
             function (res) {
                 if (res.data.error)

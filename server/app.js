@@ -58,6 +58,7 @@ app.use('/api/agent/auth', require('./routes/api/agent/auth'));
 app.use('/api/agent/sites', require('./routes/api/agent/sites'));
 app.use('/api/agent/users', require('./routes/api/agent/users'));
 app.use('/api/agent/rooms', require('./routes/api/agent/rooms'));
+app.use('/api/agent/messages', require('./routes/api/agent/messages'));
 
 // API customer
 app.use('/api/customer/auth', require('./routes/api/customer/auth'));
