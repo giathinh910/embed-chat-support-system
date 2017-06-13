@@ -14,7 +14,11 @@ angular
                 }
             })
     })
-    .controller('chatController', function ($scope, $http, AppStorage, AppConfig) {
+    .controller('chatController', function ($scope, $http, AppStorage, AppConfig, $timeout, Helper) {
+        $timeout(function () {
+            Helper.sendHeight();
+        });
+
         $scope.chatForm = {
             content: ''
         };

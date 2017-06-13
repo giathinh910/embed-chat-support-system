@@ -25,7 +25,7 @@
         <!--</div>-->
         <div class="card-block">
             <div class="row">
-                <div class="col-xs-12 col-sm-8">
+                <div class="col-xs-12 col-sm-7">
                     <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Agents in this site</h3>
                     <agent-agent-search *ngIf="isOwner(site)" (onAgentSelected)="assignAgent($event)">
                     </agent-agent-search>
@@ -50,9 +50,10 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-xs-12 col-sm-4">
-                    <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Embed code</h3>
-                    <code>{{chatClientUrl}}/?site=593e05e0decf5e00201e0c99</code>
+                <div class="col-xs-12 col-sm-5">
+                    <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Embed snippet</h3>
+                    <p class="text-muted">Paste this snippet into your site. Ideally right before the <code>&lt;/body&gt;</code> closing tag.</p>
+                    <code *ngIf="embedCode" style="word-wrap: break-word;">{{embedCode}}</code>
                 </div>
             </div>
         </div>

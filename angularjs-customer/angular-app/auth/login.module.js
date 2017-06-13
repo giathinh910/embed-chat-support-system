@@ -14,7 +14,11 @@ angular
                 }
             })
     })
-    .controller('loginController', function ($scope, $http, $state, AppStorage, AppConfig) {
+    .controller('loginController', function ($scope, $http, $state, AppStorage, AppConfig, $timeout, Helper) {
+        $timeout(function() {
+            Helper.sendHeight();
+        });
+
         $scope.loginForm = {
             email: 'customer1@email.com',
             password: '121212',

@@ -30,6 +30,7 @@ var app = angular
             }
         }
 
+        // middleware
         $transitions.onStart({}, function (trans) {
             var nextStateName = trans.to().name;
             var nextStateData = trans.to().data;
@@ -53,10 +54,29 @@ var app = angular
             }
         });
     })
-    .controller('appController', function ($scope, AppStorage, $state) {
-        $scope.logout = function () {
+    .controller('appController', function ($scope, AppStorage, Helper, $state, $timeout, jwtHelper) {
+        $timeout(function() {
+            Helper.sendHeight();
+        });
+
+        $scope.appContentToggleState = false;
+
+        $scope.toggleAppContent = function () {
+            $scope.appContentToggleState = !$scope.appContentToggleState;
+            $timeout(function() {
+                Helper.sendHeight();
+            });
+        };
+
+        $scope.loggedIn = function () {
+            return AppStorage.getToken() && !jwtHelper.isTokenExpired(AppStorage.getToken())
+        };
+
+        $scope.logout = function ($event) {
             AppStorage.reset();
             $state.go('login');
+            $event.preventDefault();
+            $event.stopPropagation();
         }
     });
 

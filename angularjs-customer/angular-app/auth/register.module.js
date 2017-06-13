@@ -14,7 +14,11 @@ angular
                 }
             })
     })
-    .controller('registerController', function ($scope, $http, $state, AppConfig) {
+    .controller('registerController', function ($scope, $http, $state, AppConfig, $timeout, Helper) {
+        $timeout(function() {
+            Helper.sendHeight();
+        });
+
         $scope.registerForm = {
             email: 'customer1@email.com',
             displayName: 'Customer 1',

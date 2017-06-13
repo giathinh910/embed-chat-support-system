@@ -1,4 +1,4 @@
-app.service('Helper', function () {
+app.service('Helper', function ($window) {
     this.queryParser = function (queryString) {
         var paramsObj = {};
 
@@ -14,4 +14,9 @@ app.service('Helper', function () {
 
         return paramsObj;
     };
+
+    this.sendHeight = function () {
+        var height = $window.document.getElementsByTagName("html")[0].scrollHeight;
+        $window.parent.postMessage(["documentHeight", height], "*");
+    }
 });

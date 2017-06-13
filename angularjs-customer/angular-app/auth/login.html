@@ -1,29 +1,31 @@
-<form name="form" ng-submit="login()">
-    <div ng-class="{'has-danger': form.email.$error.required || form.email.$error.email}"
-         class="form-group">
-        <input ng-model="loginForm.email"
-               name="email"
-               type="email" class="form-control" placeholder="Enter email" required>
-    </div>
-    <div ng-class="{'has-danger': form.password.$error.required}"
-         class="form-group">
-        <input ng-model="loginForm.password"
-               name="password"
-               type="password" class="form-control" placeholder="Enter password" required>
-    </div>
-    <div ng-class="{'has-danger': form.site.$error.required}"
-         class="form-group">
-        <input ng-model="loginForm.site"
-               name="site"
-               type="text" class="form-control" placeholder="[dev] Site ID" required>
-    </div>
-    <div class="form-group">
-        <button ng-disabled="!form.$valid"
-                type="submit" class="btn btn-primary d-block text-center" style="width: 100%">
-            Sign In
-        </button>
-    </div>
-    <div class="text-center mt-2">
-        <small><a href="#!/register">... hoặc đăng kí nếu chưa có tài khoản</a></small>
-    </div>
-</form>
+<div class="tb-login-view">
+    <form name="form" ng-submit="login()">
+        <div ng-class="{'has-danger': form.email.$error.required || form.email.$error.email}"
+             class="form-group">
+            <input ng-model="loginForm.email"
+                   name="email"
+                   type="email" class="form-control" placeholder="Enter email" required>
+        </div>
+        <div ng-class="{'has-danger': form.password.$error.required}"
+             class="form-group">
+            <input ng-model="loginForm.password"
+                   name="password"
+                   type="password" class="form-control" placeholder="Enter password" required>
+        </div>
+        <!--<div ng-class="{'has-danger': form.site.$error.required}"-->
+             <!--class="form-group">-->
+            <!--<input ng-model="loginForm.site"-->
+                   <!--name="site"-->
+                   <!--type="text" class="form-control" placeholder="[dev] Site ID" required>-->
+        <!--</div>-->
+        <div class="form-group">
+            <button ng-disabled="!form.$valid"
+                    type="submit" class="btn btn-primary d-block text-center" style="width: 100%">
+                Sign In
+            </button>
+        </div>
+        <div class="text-center mt-2">
+            <small>Haven't got an account? <a ui-sref="register">Free sign up now.</a></small>
+        </div>
+    </form>
+</div>

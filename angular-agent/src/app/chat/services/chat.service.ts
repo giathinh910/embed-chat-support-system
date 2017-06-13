@@ -5,7 +5,7 @@ import { Subject } from "rxjs/Subject";
 import { StorageService } from "../../global/services/storage.service";
 import { AuthHttp } from 'angular2-jwt';
 
-declare let io: any;
+declare const io: any;
 
 @Injectable()
 export class ChatService {
@@ -76,7 +76,7 @@ export class ChatService {
             }
         });
 
-        let socket = this.socket;
+        const socket = this.socket;
 
         socket.on('connect', () => this.socketStatus.next(true));
 
