@@ -15,7 +15,8 @@ angular
             })
     })
     .controller('registerController', function ($scope, $http, $state, AppConfig, $timeout, Helper) {
-        $timeout(function() {
+        // send body height to the iframe host
+        $timeout(function () {
             Helper.sendHeight();
         });
 

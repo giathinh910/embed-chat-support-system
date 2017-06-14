@@ -15,7 +15,8 @@ angular
             })
     })
     .controller('loginController', function ($scope, $http, $state, AppStorage, AppConfig, $timeout, Helper) {
-        $timeout(function() {
+        // send body height to the iframe host
+        $timeout(function () {
             Helper.sendHeight();
         });
 

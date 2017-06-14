@@ -38,7 +38,7 @@
             <td class="text-center">
                 <div class="btn-group btn-group-sm" role="group">
                     <a routerLink="/chat/{{site._id}}" class="btn btn-primary">Start Chatting</a>
-                    <button *ngIf="isOwner(site)"
+                    <button *ngIf="!isOwner(site)"
                             (click)="leaveSite(site._id, siteIndex)"
                             href="#" class="btn btn-danger">Leave Site</button>
                 </div>

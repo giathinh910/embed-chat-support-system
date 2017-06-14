@@ -34,7 +34,7 @@
         <div class="col-12 col-md-4">
             <p class="font-weight-bold">REGISTED CUSTOMERS</p>
             <div *ngIf="rooms && rooms.length == 0" class="alert alert-info">
-                No one is online
+                There isn't any customer yet
             </div>
             <div *ngIf="rooms" class="list-group">
                 <a *ngFor="let room of rooms; let roomIndex = index"

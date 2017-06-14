@@ -1,81 +1,83 @@
-app.service('AppStorage', function() {
+app.service('AppStorage', function () {
+    var keyPrefix = 'tbEmbedChat';
+
     var keyNames = {
-        token: 'token',
-        userId: 'userId',
-        userEmail: 'userEmail',
-        userDisplayName: 'userDisplayName',
-        userLevel: 'userLevel',
-        userSite: 'userSite',
-        userRoom: 'userRoom'
+        token: keyPrefix + 'token',
+        userId: keyPrefix + 'userId',
+        userEmail: keyPrefix + 'userEmail',
+        userDisplayName: keyPrefix + 'userDisplayName',
+        userLevel: keyPrefix + 'userLevel',
+        userSite: keyPrefix + 'userSite',
+        userRoom: keyPrefix + 'userRoom'
     };
 
-    this.setToken = function(token) {
+    this.setToken = function (token) {
         localStorage.setItem(keyNames.token, token);
     };
 
-    this.getToken = function() {
+    this.getToken = function () {
         return localStorage.getItem(keyNames.token);
     };
 
-    this.setUserId = function(id) {
+    this.setId = function (id) {
         localStorage.setItem(keyNames.userId, id);
     };
 
-    this.getUserId = function() {
+    this.getId = function () {
         return localStorage.getItem(keyNames.userId);
     };
 
-    this.setUserEmail = function(email) {
+    this.setEmail = function (email) {
         localStorage.setItem(keyNames.userEmail, email);
     };
 
-    this.getUserEmail = function() {
+    this.getEmail = function () {
         return localStorage.getItem(keyNames.userEmail);
     };
 
-    this.setDisplayName = function(displayName) {
+    this.setDisplayName = function (displayName) {
         localStorage.setItem(keyNames.userDisplayName, displayName);
     };
 
-    this.getDisplayName = function() {
+    this.getDisplayName = function () {
         return localStorage.getItem(keyNames.userDisplayName);
     };
 
-    this.setLevel = function(level) {
+    this.setLevel = function (level) {
         localStorage.setItem(keyNames.userLevel, level);
     };
 
-    this.getLevel = function() {
+    this.getLevel = function () {
         return localStorage.getItem(keyNames.userLevel);
     };
 
-    this.setSite = function(site) {
+    this.setSite = function (site) {
         localStorage.setItem(keyNames.userSite, site);
     };
 
-    this.getSite = function() {
+    this.getSite = function () {
         return localStorage.getItem(keyNames.userSite);
     };
 
-    this.setRoom = function(room) {
+    this.setRoom = function (room) {
         localStorage.setItem(keyNames.userRoom, room);
     };
 
-    this.getRoom = function() {
+    this.getRoom = function () {
         return localStorage.getItem(keyNames.userRoom);
     };
 
-    this.setOnLogin = function(user) {
+    this.setOnLogin = function (user) {
         this.setToken(user.token);
-        this.setUserEmail(user._id);
-        this.setUserEmail(user.email);
+        this.setEmail(user._id);
+        this.setEmail(user.email);
         this.setDisplayName(user.displayName);
         this.setLevel(user.level);
         this.setSite(user.site);
         this.setRoom(user.room);
     };
 
-    this.reset = function() {
+    this.reset = function () {
         localStorage.clear();
     }
 });

@@ -1,7 +1,11 @@
+/* BASE
+------------------------------------------*/
 body {
     background: transparent;
 }
 
+/* LAYOUT
+------------------------------------------*/
 .tb-embed-app {
     overflow: hidden;
 }
@@ -23,11 +27,15 @@ body {
     background: #fff;
 }
 
+/* MODULE: auth
+------------------------------------------*/
 .tb-register-view,
 .tb-login-view {
     padding: 10px;
 }
 
+/* MODULE: chat
+------------------------------------------*/
 .tb-chat-frame .entry-messages {
     background: #f2f2f2;
     height: 15.3rem;

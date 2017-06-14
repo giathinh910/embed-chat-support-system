@@ -55,25 +55,31 @@ var app = angular
         });
     })
     .controller('appController', function ($scope, AppStorage, Helper, $state, $timeout, jwtHelper) {
-        $timeout(function() {
+        // send body height to the iframe host
+        $timeout(function () {
             Helper.sendHeight();
         });
 
+        // control main content visibility
         $scope.appContentToggleState = false;
 
+        // handle app header click action
         $scope.toggleAppContent = function () {
             $scope.appContentToggleState = !$scope.appContentToggleState;
-            $timeout(function() {
+            $timeout(function () {
                 Helper.sendHeight();
+                $scope.$broadcast('app-content.show');
             });
         };
 
+        // return authentication state
         $scope.loggedIn = function () {
             return AppStorage.getToken() && !jwtHelper.isTokenExpired(AppStorage.getToken())
         };
 
         $scope.logout = function ($event) {
             AppStorage.reset();
+            $scope.$broadcast('app.logout');
             $state.go('login');
             $event.preventDefault();
             $event.stopPropagation();

@@ -34,23 +34,20 @@
     <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="./assets/js/socket.io.js"></script>
 </head>
-<body><!-- style="height: 333px;"-->
+<body>
 
 <div class="tb-embed-app">
     <div ng-click="toggleAppContent(); $event.preventDefault()"
          class="tb-embed-app-header d-flex justify-content-between">
         <span>Online support</span>
         <a ng-if="loggedIn()"
-           ng-click="logout($event)" href="#logout">SO</a>
+           ng-click="logout($event)"
+           href="#logout" title="Sign Out">
+            <i class="fa fa-sign-out"></i>
+        </a>
     </div>
-    <!--<nav class="text-center">-->
-    <!--<a ui-sref="login">login</a>-->
-    <!--<a ui-sref="register">register</a>-->
-    <!--<a ui-sref="chat">chat</a>-->
-    <!--<a ng-click="logout(); $event.preventDefault()" href="#logout">sign out</a>-->
-    <!--</nav>-->
 
-    <div ng-if="appContentToggleState" class="tb-embed-app-content">
+    <div ng-hide="!appContentToggleState" class="tb-embed-app-content">
         <div ui-view></div>
     </div>
 </div>

@@ -14,11 +14,7 @@ angular
                 }
             })
     })
-    .controller('chatController', function ($scope, $http, AppStorage, AppConfig, $timeout, Helper) {
-        $timeout(function () {
-            Helper.sendHeight();
-        });
-
+    .controller('chatController', function ($scope, $http, AppStorage, AppConfig, $timeout, Helper, $window) {
         $scope.chatForm = {
             content: ''
         };
@@ -35,8 +31,6 @@ angular
         $http({
             method: 'GET',
             url: AppConfig.apiUrl + '/messages/room/' + AppStorage.getRoom()
-            // params: {
-            // }
         }).then(
             function (res) {
                 if (res.data.error)
@@ -58,15 +52,29 @@ angular
 
         socket.on('agent says', function (message) {
             $scope.$apply(function () {
-                $scope.messages.push(message);
+                $scope.pushMessage(message);
             })
         });
 
         socket.on('message saved', function (message) {
-            console.log(message);
+            // console.log(message);
             // $scope.$apply(function() {
             //     $scope.messages.push(message);
             // })
+        });
+
+        $scope.$on('app.logout', function (e) {
+            socket.close();
+        });
+
+        $scope.$on('app-content.show', function (e) {
+            // wait for dom rendered
+            $timeout(function () {
+                // send body height to the iframe host
+                Helper.sendHeight();
+            });
+            // scroll messages to bottom
+            $scope.autoScrollMessagesToBottom();
         });
 
         $scope.sendMessage = function () {
@@ -79,8 +87,20 @@ angular
                 }
             };
             socket.emit('customer says', message);
-            $scope.messages.push(message);
-            console.log(message);
+            $scope.pushMessage(message);
             $scope.chatForm.content = '';
         };
+
+        $scope.pushMessage = function (message) {
+            $scope.messages.push(message);
+            $scope.autoScrollMessagesToBottom();
+        };
+
+        $scope.autoScrollMessagesToBottom = function () {
+            $timeout(function () {
+                var messagesDiv = $window.document.getElementById('messagesDiv');
+                console.log(messagesDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 0, false);
+        }
     });
