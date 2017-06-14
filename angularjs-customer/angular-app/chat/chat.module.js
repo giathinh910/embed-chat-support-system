@@ -36,6 +36,18 @@ angular
             Helper.sendHeight();
         });
 
+        // prevent scrolling overlap
+        var messagesDiv = $window.document.getElementById('messagesDiv');
+        messagesDiv.addEventListener('mousewheel', function (e) {
+            if (messagesDiv.clientHeight + messagesDiv.scrollTop + e.deltaY >= messagesDiv.scrollHeight) {
+                e.preventDefault();
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            } else if (messagesDiv.scrollTop + e.deltaY <= 0) {
+                e.preventDefault();
+                messagesDiv.scrollTop = 0;
+            }
+        }, false);
+
         $scope.chatForm = {
             content: ''
         };
