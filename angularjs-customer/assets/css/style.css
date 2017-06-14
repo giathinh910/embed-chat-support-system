@@ -44,8 +44,27 @@ body {
     padding: .5rem;
 }
 
-.tb-chat-frame .entry-messages > div {
-    margin-bottom: .3rem;
+.tb-chat-frame .entry-messages .entry-message {
+    margin-bottom: .5rem;
+}
+
+.tb-chat-frame .entry-messages .entry-message .entry-message-inner {
+    display: inline-block;
+    background: #fff;
+    border-radius: 4px;
+    max-width: 80%;
+    padding: 5px 8px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0 5px 0;
+    font-size: 0.9rem;
+}
+
+.tb-chat-frame .entry-messages .entry-message.is-me {
+    text-align: right;
+}
+
+.tb-chat-frame .entry-messages .entry-message.is-me .entry-message-inner {
+    background: #0275d8;
+    color: #fff;
 }
 
 .tb-chat-frame form {

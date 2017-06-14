@@ -1,7 +1,13 @@
 <div class="tb-chat-frame">
     <div class="entry-messages" id="messagesDiv">
-        <div ng-repeat="message in messages">
-            <strong>{{message.user.displayName}}: </strong> {{message.content}}
+        <div ng-repeat="message in messages"
+             ng-class="{'is-me': isMyMessage(message)}"
+             class="entry-message">
+            <siv class="entry-message-inner">
+                <strong ng-if="isMyMessage(message)">You: </strong>
+                <strong ng-if="!isMyMessage(message)">{{message.user.displayName}}: </strong>
+                {{message.content}}
+            </siv>
         </div>
     </div>
     <form name="form" ng-submit="sendMessage()">

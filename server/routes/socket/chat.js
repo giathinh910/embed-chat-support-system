@@ -116,14 +116,16 @@ var handleCustomerConnection = function (socket) {
         };
         socket.to(roomId).emit('customer says', message);
         message.user = decodedUser._id;
-        MessageModel.createOne(message, function (err, r) {
+        MessageModel.createOne(message, function (err, message) {
             if (err)
                 socket.emit('message failed to save', {
                     content: data.content,
                     user: decodedUser
                 });
             else
-                socket.emit('message saved', r);
+                MessageModel.populate(message, 'user', function (err) {
+                    socket.emit('message saved', message);
+                });
         })
     });
 
@@ -207,14 +209,16 @@ var handleAgentConnection = function (socket) {
             user: decodedUser
         };
         socket.to(data.room).emit('agent says', message);
-        MessageModel.createOne(message, function (err, r) {
+        MessageModel.createOne(message, function (err, message) {
             if (err)
                 socket.emit('message failed to save', {
                     content: data.content,
                     user: decodedUser
                 });
             else
-                socket.emit('message saved', r);
+                MessageModel.populate(message, 'user', function (err) {
+                    socket.emit('message saved', message);
+                });
         })
     });
 

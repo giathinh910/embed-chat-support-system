@@ -56,11 +56,14 @@ angular
             })
         });
 
-        socket.on('message saved', function (message) {
-            // console.log(message);
-            // $scope.$apply(function() {
-            //     $scope.messages.push(message);
-            // })
+        // Make sure message is saved
+        socket.on('message saved', function (savedMessage) {
+            var messageIndex = _.findIndex($scope.messages, function (message) {
+                return message.content === savedMessage.content;
+            });
+            $scope.$apply(function () {
+                $scope.messages[messageIndex] = savedMessage;
+            })
         });
 
         $scope.$on('app.logout', function (e) {
@@ -81,8 +84,9 @@ angular
             var message = {
                 content: $scope.chatForm.content,
                 user: {
-                    displayName: AppStorage.getDisplayName(),
-                    site: AppStorage.getSite(),
+                    isMe: true,
+                    displayName: AppStorage.getUserDisplayName(),
+                    site: AppStorage.getUserSite(),
                     room: AppStorage.getRoom()
                 }
             };
@@ -99,8 +103,11 @@ angular
         $scope.autoScrollMessagesToBottom = function () {
             $timeout(function () {
                 var messagesDiv = $window.document.getElementById('messagesDiv');
-                console.log(messagesDiv);
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }, 0, false);
+        };
+
+        $scope.isMyMessage = function (message) {
+            return AppStorage.getUserId() === message.user._id || message.user.isMe;
         }
     });

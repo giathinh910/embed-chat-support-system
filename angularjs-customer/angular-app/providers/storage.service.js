@@ -19,31 +19,31 @@ app.service('AppStorage', function () {
         return localStorage.getItem(keyNames.token);
     };
 
-    this.setId = function (id) {
+    this.setUserId = function (id) {
         localStorage.setItem(keyNames.userId, id);
     };
 
-    this.getId = function () {
+    this.getUserId = function () {
         return localStorage.getItem(keyNames.userId);
     };
 
-    this.setEmail = function (email) {
+    this.setUserEmail = function (email) {
         localStorage.setItem(keyNames.userEmail, email);
     };
 
-    this.getEmail = function () {
+    this.getUserEmail = function () {
         return localStorage.getItem(keyNames.userEmail);
     };
 
-    this.setDisplayName = function (displayName) {
+    this.setUserDisplayName = function (displayName) {
         localStorage.setItem(keyNames.userDisplayName, displayName);
     };
 
-    this.getDisplayName = function () {
+    this.getUserDisplayName = function () {
         return localStorage.getItem(keyNames.userDisplayName);
     };
 
-    this.setLevel = function (level) {
+    this.setUserLevel = function (level) {
         localStorage.setItem(keyNames.userLevel, level);
     };
 
@@ -51,15 +51,15 @@ app.service('AppStorage', function () {
         return localStorage.getItem(keyNames.userLevel);
     };
 
-    this.setSite = function (site) {
+    this.setUserSite = function (site) {
         localStorage.setItem(keyNames.userSite, site);
     };
 
-    this.getSite = function () {
+    this.getUserSite = function () {
         return localStorage.getItem(keyNames.userSite);
     };
 
-    this.setRoom = function (room) {
+    this.setUserRoom = function (room) {
         localStorage.setItem(keyNames.userRoom, room);
     };
 
@@ -69,12 +69,12 @@ app.service('AppStorage', function () {
 
     this.setOnLogin = function (user) {
         this.setToken(user.token);
-        this.setEmail(user._id);
-        this.setEmail(user.email);
-        this.setDisplayName(user.displayName);
-        this.setLevel(user.level);
-        this.setSite(user.site);
-        this.setRoom(user.room);
+        this.setUserId(user._id);
+        this.setUserEmail(user.email);
+        this.setUserDisplayName(user.displayName);
+        this.setUserLevel(user.level);
+        this.setUserSite(user.site);
+        this.setUserRoom(user.room);
     };
 
     this.reset = function () {

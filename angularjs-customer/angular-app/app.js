@@ -22,7 +22,7 @@ var app = angular
             $state.go('chat');
         } else {
             if (query.site) {
-                AppConfig.setSite(query.site);
+                AppConfig.setUserSite(query.site);
                 $state.go('chat');
             } else {
                 $state.go('home');
