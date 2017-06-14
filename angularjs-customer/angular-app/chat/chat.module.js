@@ -15,6 +15,27 @@ angular
             })
     })
     .controller('chatController', function ($scope, $http, AppStorage, AppConfig, $timeout, Helper, $window) {
+        $scope.autoScrollMessagesToBottom = function () {
+            $timeout(function () {
+                var messagesDiv = $window.document.getElementById('messagesDiv');
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 0, false);
+        };
+
+        $scope.pushMessage = function (message) {
+            $scope.messages.push(message);
+            $scope.autoScrollMessagesToBottom();
+        };
+
+        $scope.isMyMessage = function (message) {
+            return AppStorage.getUserId() === message.user._id || message.user.isMe;
+        };
+
+        // send body height to the iframe host
+        $timeout(function () {
+            Helper.sendHeight();
+        });
+
         $scope.chatForm = {
             content: ''
         };
@@ -37,6 +58,7 @@ angular
                     alert(res.data.error);
                 else {
                     $scope.messages = res.data;
+                    $scope.autoScrollMessagesToBottom();
                 }
             },
             function errorCallback(res) {
@@ -94,20 +116,4 @@ angular
             $scope.pushMessage(message);
             $scope.chatForm.content = '';
         };
-
-        $scope.pushMessage = function (message) {
-            $scope.messages.push(message);
-            $scope.autoScrollMessagesToBottom();
-        };
-
-        $scope.autoScrollMessagesToBottom = function () {
-            $timeout(function () {
-                var messagesDiv = $window.document.getElementById('messagesDiv');
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            }, 0, false);
-        };
-
-        $scope.isMyMessage = function (message) {
-            return AppStorage.getUserId() === message.user._id || message.user.isMe;
-        }
     });

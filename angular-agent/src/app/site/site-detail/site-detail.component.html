@@ -2,7 +2,7 @@
     <div class="container d-sm-flex justify-content-sm-between">
         <div>
             <h2 class="display-4" style="font-size: 2rem">{{site.displayName}} - {{site.domain}}</h2>
-            <p *ngIf="isOwner(site)" class="lead">Manage other agents which can chat with customers from this site.</p>
+            <p *ngIf="isOwner(site)" class="lead">Manage other agents which can chat with customers from this site, .</p>
             <p *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></p>
             <!--<a routerLink="/sites/create">ADD NEW SITE</a>-->
         </div>
@@ -20,17 +20,23 @@
 <div class="container">
     <div *ngIf="site" class="card">
         <!--<div class="card-header d-sm-flex justify-content-sm-between">-->
-            <!--<span>{{site.displayName}} - {{site.domain}}</span>-->
-            <!--<span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>-->
+        <!--<span>{{site.displayName}} - {{site.domain}}</span>-->
+        <!--<span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>-->
         <!--</div>-->
         <div class="card-block">
             <div class="row">
-                <div class="col-xs-12 col-sm-7">
-                    <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Agents in this site</h3>
-                    <agent-agent-search *ngIf="isOwner(site)" (onAgentSelected)="assignAgent($event)">
-                    </agent-agent-search>
-                    <table *ngIf="site.agents.length" class="table mt-3">
-                        <thead>
+                <div class="col-xs-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Agents in this site</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <agent-agent-search *ngIf="isOwner(site)" (onAgentSelected)="assignAgent($event)">
+                            </agent-agent-search>
+                        </div>
+                    </div>
+                    <table *ngIf="site.agents.length" class="table table-bordered mt-3">
+                        <thead class="thead-default">
                         <tr>
                             <th>#</th>
                             <th>Email</th>
@@ -50,10 +56,45 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-xs-12 col-sm-5">
-                    <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Embed snippet</h3>
-                    <p class="text-muted">Paste this snippet into your site, ideally right before the <code>&lt;/body&gt;</code> closing tag.</p>
-                    <code *ngIf="embedCode" style="word-wrap: break-word;">{{embedCode}}</code>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="site" class="card mt-4">
+        <!--<div class="card-header d-sm-flex justify-content-sm-between">-->
+        <!--<span>{{site.displayName}} - {{site.domain}}</span>-->
+        <!--<span *ngIf="!isOwner(site)">Owner: <strong>{{site.owner.displayName}}</strong></span>-->
+        <!--</div>-->
+        <div class="card-block">
+            <h3 class="card-title font-weight-normal" style="font-size: 1.5rem">Client Chat Box</h3>
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <h4 class="card-title font-weight-normal" style="font-size: 1rem">Config chat box</h4>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Position</label>
+                        <div class="col-10">
+                            <select [(ngModel)]="embedSnippetConfig.position"
+                                    (ngModelChange)="buildEmbedCode()"
+                                    class="form-control">
+                                <option value="left">Left</option>
+                                <option value="right">Right</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Offset</label>
+                        <div class="col-10">
+                            <input [(ngModel)]="embedSnippetConfig.offset"
+                                   (ngModelChange)="buildEmbedCode()"
+                                   class="form-control" type="number" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5 col-sm-8">
+                    <h4 class="card-title font-weight-normal" style="font-size: 1rem">Embed snippet</h4>
+                    <p class="text-muted">Paste this snippet into your site, ideally right before the <code>&lt;/body&gt;</code>
+                        closing tag.</p>
+                    <code *ngIf="embedSnippet" style="word-wrap: break-word;">{{embedSnippet}}</code>
                 </div>
             </div>
         </div>

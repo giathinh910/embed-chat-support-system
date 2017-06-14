@@ -6,7 +6,7 @@
     document.querySelector("body").appendChild(iframe);
 
     var tbChatFrame = document.getElementById("593e05e0decf5e00201e0c99");
-    tbChatFrame.style.cssText = "border:none;position:fixed;bottom:0;right:15px;width:300px;height:0;box-shadow:rgba(0,0,0,0.1) 0 0 5px 0";
+    tbChatFrame.style.cssText = "border:none;position:fixed;z-index:10000;bottom:0;right:15px;width:300px;height:0;box-shadow:rgba(0,0,0,0.1) 0 0 5px 0";
     window.addEventListener("message", function (e) {
         var eventName = e.data[0];
         var data = e.data[1];
