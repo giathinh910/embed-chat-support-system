@@ -45,7 +45,7 @@ export class ChatComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.listenIoSubjects();
+        this.observeSocketEvents();
 
         this.activatedRoute.params.subscribe(params => {
             let siteId = params.siteId;
@@ -134,7 +134,7 @@ export class ChatComponent implements OnInit {
         this.chatForm.reset();
     }
 
-    listenIoSubjects() {
+    observeSocketEvents() {
         let thisChatComponent = this;
 
         // when connect / disconnect
