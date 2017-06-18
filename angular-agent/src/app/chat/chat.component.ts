@@ -57,7 +57,8 @@ export class ChatComponent implements OnInit {
                 for (let room of rooms) {
                     room.current = false;
                     room.online = false;
-                    room.messages = []
+                    room.unread = false;
+                    room.messages = [];
                 }
                 this.rooms = rooms;
                 // switch to first room by default
@@ -100,6 +101,7 @@ export class ChatComponent implements OnInit {
             this.rooms[i].current = false;
         }
         this.rooms[roomIndex].current = true;
+        this.rooms[roomIndex].unread = false;
         this.currentRoom = this.rooms[roomIndex];
         this.currentMessages = this.rooms[roomIndex].messages;
 
@@ -155,20 +157,6 @@ export class ChatComponent implements OnInit {
             }
         });
 
-        // when message comes
-        this.chatService.messages$.subscribe(message => {
-            let roomIndex = _.findIndex(thisChatComponent.rooms, function (room) {
-                return room._id === message.user.room;
-            });
-
-            // push message to its own room
-            this.rooms[roomIndex].messages.push(message);
-
-            // also push message to screen if it was sent by the customer
-            if (message.user._id !== this.storageService.getUserId())
-                this.currentMessages.push(message);
-        });
-
         // when a customer come online
         this.chatService.aCustomerComesOnline$.subscribe(customerComesOnline => {
             let roomIndex = _.findIndex(this.rooms, function (room) {
@@ -185,6 +173,25 @@ export class ChatComponent implements OnInit {
             });
             if (roomIndex > -1)
                 this.rooms[roomIndex].online = false;
-        })
+        });
+
+        // when message comes
+        this.chatService.messages$.subscribe(message => {
+            let roomIndexWhereMessageComeTo = _.findIndex(thisChatComponent.rooms, function (room) {
+                return room._id === message.user.room;
+            });
+
+            // push message to its own room
+            this.rooms[roomIndexWhereMessageComeTo].messages.push(message);
+
+            // highlight the room where message come to
+            if (message.user.room !== this.currentRoom._id) {
+                this.rooms[roomIndexWhereMessageComeTo].unread = true;
+            }
+
+            // also push message to current display room
+            if (this.rooms[roomIndexWhereMessageComeTo]._id === this.currentRoom._id)
+                this.currentMessages.push(message);
+        });
     }
 }

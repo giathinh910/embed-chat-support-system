@@ -115,6 +115,7 @@ var handleCustomerConnection = function (socket) {
             user: decodedUser
         };
         socket.to(roomId).emit('customer says', message);
+        socket.to(siteId).emit('some customer says', message);
         message.user = decodedUser._id;
         MessageModel.createOne(message, function (err, message) {
             if (err)

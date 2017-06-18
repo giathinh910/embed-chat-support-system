@@ -15,9 +15,6 @@ export class ChatService {
     private chatSocketUrl = environment.chatSocketUrl;
     private socket;
 
-    private messages = new Subject<any>();
-    messages$ = this.messages.asObservable();
-
     private socketStatus = new Subject<boolean>();
     socketStatus$ = this.socketStatus.asObservable();
 
@@ -29,6 +26,12 @@ export class ChatService {
 
     private aCustomerComesOffline = new Subject<any>();
     aCustomerComesOffline$ = this.aCustomerComesOffline.asObservable();
+
+    private messages = new Subject<any>();
+    messages$ = this.messages.asObservable();
+
+    private someCustomerMessages = new Subject<any>();
+    someCustomerMessages$ = this.someCustomerMessages.asObservable();
 
     constructor(private storageService: StorageService,
                 private http: AuthHttp) {
@@ -95,6 +98,8 @@ export class ChatService {
         });
 
         socket.on('customer says', (data) => this.messages.next(data));
+
+        socket.on('some customer says', (data) => this.someCustomerMessages.next(data));
     }
 
     emitRequestInitData() {

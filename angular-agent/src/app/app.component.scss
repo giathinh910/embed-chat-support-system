@@ -6,6 +6,8 @@ html {
 
 body {
   font-size: 0.9rem;
+  padding-top: 0.5rem * 2 + 0.5rem * 2 + $line-height-base;
+  padding-bottom: 0.5rem * 2 /* navbar padding */ + 0.5rem * 2 /* navbar content padding */ + $line-height-base;
 }
 
 .app-page-title {

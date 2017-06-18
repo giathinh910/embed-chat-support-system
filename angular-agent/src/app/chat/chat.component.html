@@ -32,26 +32,26 @@
 
     <div class="row">
         <div class="col-12 col-md-4">
-            <div class="card mb-4">
-                <div class="card-block">
-                    <h3 class="card-title font-weight-normal" style="font-size: 1rem">REGISTED CUSTOMERS</h3>
-                    <div *ngIf="rooms && rooms.length == 0" class="alert alert-info">
-                        There isn't any customer yet
+            <!--<div class="card mb-4">-->
+                <!--<div class="card-block">-->
+                <!--</div>-->
+            <!--</div>-->
+            <h3 class="card-title" style="font-size: 1rem">SITE'S CUSTOMERS</h3>
+            <div *ngIf="rooms && rooms.length == 0" class="alert alert-info">
+                There isn't any customer yet
+            </div>
+            <div *ngIf="rooms" class="list-group mb-4">
+                <a *ngFor="let room of rooms; let roomIndex = index"
+                   [ngClass]="{'active': room.current}"
+                   (click)="switchRoom(roomIndex); $event.preventDefault()"
+                   href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <h6 [ngClass]="{'font-weight-bold': room.unread, 'font-weight-normal': !room.unread}" class="mb-0">{{room.displayName}}</h6>
+                        <span *ngIf="room.online" class="badge badge-success badge-pill">ONLINE</span>
                     </div>
-                    <div *ngIf="rooms" class="list-group">
-                        <a *ngFor="let room of rooms; let roomIndex = index"
-                           [ngClass]="{'active': room.current}"
-                           (click)="switchRoom(roomIndex); $event.preventDefault()"
-                           href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between mb-1">
-                                <h6 class="font-weight-normal mb-0">{{room.displayName}}</h6>
-                                <span *ngIf="room.online" class="badge badge-success badge-pill">ONLINE</span>
-                            </div>
-                            <!--<p class="mb-1">Hello, I'm client</p>-->
-                            <!--<small>3 days ago</small>-->
-                        </a>
-                    </div>
-                </div>
+                    <!--<p class="mb-1">Hello, I'm client</p>-->
+                    <!--<small>3 days ago</small>-->
+                </a>
             </div>
         </div>
 

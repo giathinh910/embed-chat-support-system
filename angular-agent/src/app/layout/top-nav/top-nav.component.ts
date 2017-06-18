@@ -9,7 +9,7 @@ import { AuthService } from "../../auth/services/auth.service";
 })
 export class TopNavComponent implements OnInit {
 
-    constructor(private authService: AuthService,
+    constructor(public authService: AuthService,
                 public storageService: StorageService) {
     }
 

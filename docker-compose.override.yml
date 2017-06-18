@@ -1,0 +1,34 @@
+version: "3"
+services:
+  mongo:
+    ports:
+      - "27017:27017"
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - DEBUG=server:*
+  angular-agent:
+    build:
+      context: ./angular-agent
+      dockerfile: Dockerfile
+    volumes:
+      - ./angular-agent:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:4200"
+  angularjs-customer:
+    build:
+      context: ./angularjs-customer
+      dockerfile: Dockerfile
+    volumes:
+      - ./angularjs-customer:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3002:8080"
